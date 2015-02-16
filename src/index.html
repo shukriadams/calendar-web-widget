@@ -1,0 +1,29 @@
+<html>
+    <HEAD>
+        <meta charset="utf-8">
+        <title>Calc Sample</title>
+        <link rel="stylesheet" href="css/calendar-web-widget.css" type="text/css">
+    </HEAD>
+    <body>
+        <input id="calender1" type="text" placeholder="Click me" value="" />
+        <div id="calender1holder"></div>
+        <div id="calender2">Click me too</div>
+    </body>
+    <SCRIPT language="JavaScript" src="js/calendar-web-widget.js"></SCRIPT>
+    <SCRIPT language="JavaScript">
+
+        new Calender({
+            el : document.getElementById('calender1'),
+            host : document.getElementById('calender1holder'),
+            value : "2005-05-04",
+            format : 'dd/mm/yyyy'
+        });
+
+
+        new Calender({
+            el : document.getElementById('calender2'),
+            format : 'dd/mm/yyyy'
+        });
+
+    </SCRIPT>
+</html>
