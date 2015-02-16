@@ -1,3 +1,4 @@
+/* calendar-web-widget | https://github.com/shukriadams/calendar-web-widget | License : GPLv2 */
 'use strict';
 
 var Calendar = function(options){

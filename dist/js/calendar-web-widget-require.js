@@ -1,4 +1,7 @@
-'use strict';
+/* calendar-web-widget | https://github.com/shukriadams/calendar-web-widget | License : GPLv2 */
+define('calendar-web-widget', null, function(){
+
+    'use strict';
 
 var Calendar = function(options){
 
@@ -769,3 +772,7 @@ var Calendar = function(options){
 	});
 };
 
+
+
+    return Calendar;
+});

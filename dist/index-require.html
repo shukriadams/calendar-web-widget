@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Calendar</title>
+        <link rel="stylesheet" href="css/calendar-web-widget.css" type="text/css">
+    </head>
+    <body>
+        <input id="calendar1" type="text" placeholder="Click me" value="" />
+        <div id="calendar1holder"></div>
+        <div id="calendar2">Click me too</div>
+    </body>
+    <script>
+        // pretend requirejs
+        var define = define || function(m, req, cb){if(window){window.define[m]=cb();}},
+            require = require || function(m,cb){ return cb(define[m[0]]);};
+    </script>
+    <script language="JavaScript" src="js/calendar-web-widget-require.js"></script>
+    <script language="JavaScript">
+        require(['calendar-web-widget'], function(Calendar){
+            new Calendar({
+                el : document.getElementById('calendar1')
+            });
+
+            new Calendar({
+                el : document.getElementById('calendar2')
+            });
+        });
+    </script>
+</html>

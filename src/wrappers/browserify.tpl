@@ -1,0 +1,3 @@
+<%= fileContent %>
+
+module.exports = Calendar;

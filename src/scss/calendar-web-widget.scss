@@ -1,0 +1,118 @@
+// All Calendar css is namespaced within this parent class.
+.calendar-web-widget {
+
+  .calendar-outer {
+    z-index:999;
+    position:absolute;
+    visibility:hidden;
+  }
+
+  .table {
+    font-family:arial;
+    font-size:13px;
+    border-width:1px;
+    border-style:solid;
+    border-color:#395d9c;
+    background-color:#396da5;
+
+    .firstRow {
+      border-width:1px;
+      border-style:solid;
+      border-color:#395d9c;
+      background-color: #F3EFEC;
+    }
+
+    .header{
+      padding:2px;font-family:arial;
+      font-size:13px;
+    }
+
+    .holiday{
+      background-color:#FFDDDD;
+    }
+
+    .bordered{
+      border-style:solid;
+      border-width:1px;
+      border-color:#a0a0a0;
+    }
+
+    .anchor{
+      text-decoration:none;color:black;
+    }
+  }
+
+  .today {
+    background-color:#F3EFEC;
+  }
+
+  .dropdown {
+    font-family:arial;
+    font-size:11px;
+    border-width:1px;
+    border-style:solid;
+    border-color:#a0a0a0;
+    background-color:white;
+
+    .dropdown-item:hover{
+      background-color:#cee7ff;
+    }
+
+  }
+
+  .month-dropdown {
+    width:70px;
+  }
+
+  .year-dropdown{
+    width:44px;
+  }
+
+  .selectMenu{
+    z-index:999;position:absolute;visibility:hidden;
+
+  }
+
+  .close
+  {
+    display:block;
+    box-sizing:border-box;
+    width:12px;
+    height:12px;
+    border-width:2px;
+    border-style: solid;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    border-color:#880000;
+    background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%), -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%);
+    background-color:#880000;
+    transition: all 0s ease;
+  }
+  .down-arrow {
+    border-left: 8px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 8px solid #880000;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .left-arrow {
+    border-top: 6px solid transparent;
+    border-right: 8px solid #880000;
+    border-bottom: 8px solid transparent;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: -2px;
+  }
+
+  .right-arrow {
+    border-top: 6px solid transparent;
+    border-left: 8px solid #880000;
+    border-bottom: 8px solid transparent;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: -2px;
+  }
+
+}

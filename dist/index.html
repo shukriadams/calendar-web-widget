@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Calendar</title>
+        <link rel="stylesheet" href="css/calendar-web-widget.css" type="text/css">
+    </head>
+    <body>
+        <input id="calendar1" type="text" placeholder="Click me" value="" />
+        <div id="calendar1holder"></div>
+        <div id="calendar2">Click me too</div>
+    </body>
+    <script language="JavaScript" src="js/calendar-web-widget.js"></script>
+    <script language="JavaScript">
+        new Calendar({
+            el : document.getElementById('calendar1'),
+            host : document.getElementById('calendar1holder'),
+            value : "2005-05-04",
+            format : 'dd/mm/yyyy',
+            onValueChanged : function(sender, args){
+                console.log('returned value is : ' + args.date);
+                console.log('set value is also : ' + document.getElementById('calendar1').getAttribute('data-value'));
+            }
+        });
+
+        new Calendar({
+            el : document.getElementById('calendar2'),
+            format : 'dd/mm/yyyy'
+        });
+    </script>
+</html>
