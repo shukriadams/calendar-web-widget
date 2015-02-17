@@ -1,5 +1,5 @@
 /* calendar-web-widget | https://github.com/shukriadams/calendar-web-widget | License : GPLv2 */
-define('calendar-web-widget', null, function(){
+define('calendar-web-widget', [], function(){
 
     'use strict';
 

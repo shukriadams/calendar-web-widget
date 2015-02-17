@@ -1,4 +1,4 @@
-define('calendar-web-widget', null, function(){
+define('calendar-web-widget', [], function(){
 
     <%= fileContent %>
 
