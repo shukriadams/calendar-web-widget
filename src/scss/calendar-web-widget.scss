@@ -5,15 +5,27 @@
     z-index:999;
     position:absolute;
     visibility:hidden;
+    width:280px; // you can override the calender width by setting a width here
+
   }
 
-  .table {
-    font-family:arial;
+  .header-button-wrapper{
+    display:table;
+    width:100%;
+    .header-button{
+      display:table-cell;
+      width:25%;
+    }
+  }
+
+  .maintable {
+    font-family:sans-serif;
     font-size:13px;
     border-width:1px;
     border-style:solid;
     border-color:#395d9c;
     background-color:#396da5;
+    width:100%;
 
     .firstRow {
       border-width:1px;
@@ -22,8 +34,13 @@
       background-color: #F3EFEC;
     }
 
+    .headerTable{
+      width:100%;
+    }
+
     .header{
-      padding:2px;font-family:arial;
+      padding:2px;
+      font-family:sans-serif;
       font-size:13px;
     }
 
@@ -42,12 +59,18 @@
     }
   }
 
+  .innerTable{
+    width:100%;
+    font-family:sans-serif;
+    font-size:10px;
+  }
+
   .today {
     background-color:#F3EFEC;
   }
 
   .dropdown {
-    font-family:arial;
+    font-family:sans-serif;
     font-size:11px;
     border-width:1px;
     border-style:solid;

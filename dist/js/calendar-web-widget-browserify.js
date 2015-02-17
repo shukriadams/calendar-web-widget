@@ -22,8 +22,8 @@ var Calendar = function(options){
 	var	fixedX = -1;			// x position (-1 if to appear below control)
 	var	fixedY = -1;			// y position (-1 if to appear below control)
 	var startAt = 1;			// 0 - sunday ; 1 - monday
-	var showWeekNumber = 0;	// 0 - don't show; 1 - show
-	var showToday = 1;		// 0 - don't show; 1 - show
+	var showWeekNumber = 0;	    // 0 - don't show; 1 - show
+	var showToday = 1;		    // 0 - don't show; 1 - show
 
 	var gotoString = "Go To Current Month";
 	var todayString = "Today is";
@@ -59,11 +59,11 @@ var Calendar = function(options){
 		var markup = "";
 
 		markup += "<div class='js-calendar calendar-outer'>"+
-			"<table cellspacing='0' width="+((showWeekNumber==1)?250:150)+" class='table'>" + 
+			"<table cellspacing='0' class='maintable'>" +
 			"<tr class='firstRow'>" + 
-			"<td><table width='"+((showWeekNumber==1)?248:240)+"'><tr>" + 
+			"<td><table class='headerTable'><tr>" +
 			"<td class='header'>" + 
-			"<font color='#000000'><B><span class='js-caption'></span></B></font>" +
+			"<font color='#000000'><B><div class='js-caption header-button-wrapper'></div></B></font>" +
 			"</td><td align=right>" + 
 			"<a href='javascript:void(0)'><span class='js-close close'></span></a>" +
 			"</td></tr></table></td></tr><tr><td style='padding:5px' bgcolor=#ffffff><span class='js-content'></span></td></tr>";
@@ -120,13 +120,13 @@ var Calendar = function(options){
 
 
 			// link to previous month 
-			var sHTML1="<span style='border-width:0;cursor:pointer' class='js-decMonth'>&nbsp<div class='left-arrow'></div>&nbsp</span>&nbsp;";
+			var sHTML1="<div style='border-width:0;cursor:pointer' class='js-decMonth header-button'>&nbsp<div class='left-arrow'></div>&nbsp</div>&nbsp;";
 			// link to next month 
-			sHTML1+="<span style='border-width:0;cursor:pointer' class='js-incMonth'>&nbsp<div class='right-arrow'></div>&nbsp</span>&nbsp";
+			sHTML1+="<div style='border-width:0;cursor:pointer' class='js-incMonth header-button'>&nbsp<div class='right-arrow'></div>&nbsp</div>&nbsp";
 			// link to month drop-down list 
-			sHTML1+="<span class='js-spanMonth' style='border-width:0;cursor:pointer'></span>&nbsp;";
+			sHTML1+="<div class='js-spanMonth header-button' style='border-width:0;cursor:pointer'></div>&nbsp;";
 			// link to year drop-down list
-			sHTML1+="<span class='js-spanYear' style='border-width:0;cursor:pointer'></span>&nbsp;";
+			sHTML1+="<div class='js-spanYear header-button' style='border-width:0;cursor:pointer'></div>&nbsp;";
 
             root.querySelectorAll(".js-caption")[0].innerHTML  =	sHTML1;
 	
@@ -472,7 +472,7 @@ var Calendar = function(options){
 			dayPointer = 6;
 		}
 
-		var sHTML =	"<table	border=0 style='font-family:verdana;font-size:10px;'><tr>";
+		var sHTML =	"<table	class='innerTable' border=0><tr>";
 
 		if (showWeekNumber==1)
 		{
