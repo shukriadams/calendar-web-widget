@@ -58,13 +58,12 @@ var Calendar = function(options){
 		var markup = "";
 
 		markup += "<div class='js-calendar calendar-outer'>"+
-			"<table cellspacing='0' class='maintable'>" +
-			"<tr class='firstRow'>" + 
-			"<td><table class='headerTable'><tr>" +
-			"<td class='header'>" + 
-			"<font color='#000000'><B><div class='js-caption header-button-wrapper'></div></B></font>" +
-			"</td><td align=right>" + 
-			"<a href='javascript:void(0)'><span class='js-close close'></span></a>" +
+            "<table cellspacing='0' class='maintable'>" +
+			"<tr class='headerRow'>" +
+			"<td><table class='headerTable'><tr><td>" +
+			"<font ><B><div class='js-caption header-button-wrapper'></div></B></font>" +
+			"</td><td align=right style='vertical-align:top;'>" +
+			"<a href='javascript:void(0)' style='text-decoration:none;'><span class='js-close close'></span></a>" +
 			"</td></tr></table></td></tr><tr><td style='padding:5px' bgcolor=#ffffff><span class='js-content'></span></td></tr>";
 			
 		if (showToday === 1)
@@ -72,7 +71,7 @@ var Calendar = function(options){
 			markup += "<tr class='today'><td style='padding:5px' align=center><span class='js-lblToday'></span></td></tr>";
 		}
 	
-		markup += "</table></div><div class='js-selectMonth selectMenu'></div><div class='js-selectYear selectMenu'></div>";
+		markup += "</table></div>";
 		root.innerHTML = markup;
 	}
 
@@ -101,6 +100,17 @@ var Calendar = function(options){
             }
             //}
 
+            // link to previous month
+            var sHTML1="<div class='js-decMonth  header-button small'>&nbsp<div class='left-arrow'></div>&nbsp</div>&nbsp;";
+            // link to next month
+            sHTML1+="<div class='js-incMonth header-button small'>&nbsp<div class='right-arrow'></div>&nbsp</div>&nbsp";
+            // link to month drop-down list
+            sHTML1+="<div class='header-button'><div class='js-spanMonth'></div><div class='js-selectMonth selectMenu'></div>&nbsp;</div>";
+            // link to year drop-down list
+            sHTML1+="<div class='header-button'><div class='js-spanYear'></div><div class='js-selectYear selectMenu'></div>&nbsp;</div>";
+
+            root.querySelectorAll(".js-caption")[0].innerHTML  =	sHTML1;
+
 			crossobj= root.querySelectorAll(".js-calendar")[0].style;
 			hideCalendar();
 
@@ -118,16 +128,6 @@ var Calendar = function(options){
 
 
 
-			// link to previous month 
-			var sHTML1="<div style='border-width:0;cursor:pointer' class='js-decMonth header-button'>&nbsp<div class='left-arrow'></div>&nbsp</div>&nbsp;";
-			// link to next month 
-			sHTML1+="<div style='border-width:0;cursor:pointer' class='js-incMonth header-button'>&nbsp<div class='right-arrow'></div>&nbsp</div>&nbsp";
-			// link to month drop-down list 
-			sHTML1+="<div class='js-spanMonth header-button' style='border-width:0;cursor:pointer'></div>&nbsp;";
-			// link to year drop-down list
-			sHTML1+="<div class='js-spanYear header-button' style='border-width:0;cursor:pointer'></div>&nbsp;";
-
-            root.querySelectorAll(".js-caption")[0].innerHTML  =	sHTML1;
 	
 			bPageLoaded=true;
 		}
@@ -224,7 +224,7 @@ var Calendar = function(options){
 				if (i==monthSelected){
 					sName =	"<B>" +	sName +	"</B>";
 				}
-				sHTML += "<tr><td class='js-month month' data-month='" + i + "' id='m" + i + "' style='cursor:pointer'>&nbsp;" + sName + "&nbsp;</td></tr>";
+				sHTML += "<tr><td class='js-month month dropdown-item' data-month='" + i + "' id='m" + i + "' style='cursor:pointer'>&nbsp;" + sName + "&nbsp;</td></tr>";
 			}
 
             root.querySelectorAll(".js-selectMonth")[0].innerHTML = "<table class='js-month-table dropdown month-dropdown'  cellspacing=0>" + sHTML +	"</table>";
@@ -261,8 +261,8 @@ var Calendar = function(options){
 	function popUpMonth() {
 		constructMonth();
 		crossMonthObj.visibility = (dom||ie)? "visible"	: "show";
-		crossMonthObj.left = parseInt(crossobj.left) + 50;
-		crossMonthObj.top =	parseInt(crossobj.top) + 26;
+		//crossMonthObj.left = parseInt(crossobj.left) + 50;
+		//crossMonthObj.top =	parseInt(crossobj.top) + 26;
 	}
 
 	function popDownMonth()	{
@@ -316,27 +316,27 @@ var Calendar = function(options){
 		if (yearConstructed)
             return;
 
-        var sHTML =	"<tr><td align='center' class='js-year-dec dropdown-item' style='cursor:pointer'>-</td></tr>";
+        var html =	"<tr><td align='center' class='js-year-dec dropdown-item' style='cursor:pointer'>-</td></tr>";
 
         var j =	0;
         nStartingYear =	yearSelected-3;
         for	(var i=(yearSelected-3) ; i<=(yearSelected+3); i++) {
             var sName =	i;
-            if (i==yearSelected){
+            if (i == yearSelected){
                 sName =	"<b>" +	sName +	"</b>";
             }
 
-            sHTML += "<tr><td data-year='" + j + "' class='js-y" + j + " js-year dropdown-item' style='cursor:pointer'>&nbsp;" + sName + "&nbsp;</td></tr>";
+            html += "<tr><td data-year='" + j + "' class='js-y" + j + " js-year dropdown-item' style='cursor:pointer'>&nbsp;" + sName + "&nbsp;</td></tr>";
             j ++;
         }
 
-        sHTML += "<tr><td align='center' class='js-year-inc dropdown-item' style='cursor:pointer'>+</td></tr>";
+        html += "<tr><td align='center' class='js-year-inc dropdown-item' style='cursor:pointer'>+</td></tr>";
 
-        root.querySelectorAll(".js-selectYear")[0].innerHTML = "<table class='dropdown year-dropdown js-year-dropdown' cellspacing=0>"	+ sHTML	+ "</table>";
+        root.querySelectorAll('.js-selectYear')[0].innerHTML = "<table class='dropdown year-dropdown js-year-dropdown' cellspacing=0>"	+ html	+ "</table>";
 
         var years = root.querySelectorAll('.js-year');
         for (var i = 0 ; i < years.length ; i ++){
-            on(years[i], "click", handleYearClick);
+            on(years[i], 'click', handleYearClick);
         }
         yearConstructed	= true;
 
@@ -344,32 +344,32 @@ var Calendar = function(options){
             btnYearDropdown = root.querySelectorAll('.js-year-dropdown')[0],
             btnYearDec = root.querySelectorAll('.js-year-dec')[0];
 
-        on(btnYearDropdown, "mouseover", function(){
+        on(btnYearDropdown, 'mouseover', function(){
             clearTimeout(timeoutID2);
         });
-        on(btnYearDropdown, "mouseout", function(){
+        on(btnYearDropdown, 'mouseout', function(){
             clearTimeout(timeoutID2);
             timeoutID2=setTimeout(popDownYear,100);
         });
 
-        on(btnYearInc, "mouseout", function(){
+        on(btnYearInc, 'mouseout', function(){
             clearInterval(intervalID2);
         });
-        on(btnYearInc, "mouseup", function(){
+        on(btnYearInc, 'mouseup', function(){
             clearInterval(intervalID2);
         });
-        on(btnYearInc, "mousedown", function(){
+        on(btnYearInc, 'mousedown', function(){
             clearInterval(intervalID2);
             intervalID2=setInterval(incYear,30);
         });
 
-        on(btnYearDec, "mouseout", function(){
+        on(btnYearDec, 'mouseout', function(){
             clearInterval(intervalID1);
         });
-        on(btnYearDec, "mouseup", function(){
+        on(btnYearDec, 'mouseup', function(){
             clearInterval(intervalID1);
         });
-        on(btnYearDec, "mousedown", function(){
+        on(btnYearDec, 'mousedown', function(){
             clearInterval(intervalID1);
             intervalID1=setInterval(decYear,30);
         });
@@ -404,8 +404,8 @@ var Calendar = function(options){
 		{
 			leftOffset += 6;
 		}
-		crossYearObj.left =	leftOffset;
-		crossYearObj.top = parseInt(crossobj.top) +	26;
+		//crossYearObj.left =	leftOffset;
+		//crossYearObj.top = parseInt(crossobj.top) +	26;
 	}
 
 	/*** calendar ***/
@@ -521,15 +521,15 @@ var Calendar = function(options){
 
 			if ((datePointer==selectedDay)&&(monthSelected==selectedMonth)&&(yearSelected==selectedYear))
 			{ 
-				sHTML += "<b><a title=\"" + sHint + "\" class='"+sStyle+"' href='javascript:void(0)'><font class='js-day' data-day='" + datePointer +"' color=#ff0000>&nbsp;" + datePointer + "</font>&nbsp;</a></b>";
+				sHTML += "<b><a title=\"" + sHint + "\" class='"+sStyle+" day today' href='javascript:void(0)'><font class='js-day' data-day='" + datePointer +"'>&nbsp;" + datePointer + "</font>&nbsp;</a></b>";
 			}
 			else if	(dayPointer % 7 == (startAt * -1)+1)
 			{ 
-				sHTML += "<a title=\"" + sHint + "\" class='"+sStyle+"' href='javascript:void(0)'>&nbsp;<font class='js-day' data-day='" + datePointer +"' color=#909090>" + datePointer + "</font>&nbsp;</a>";
+				sHTML += "<a title=\"" + sHint + "\" class='"+sStyle+" day sunday' href='javascript:void(0)'>&nbsp;<font class='js-day' data-day='" + datePointer +"'>" + datePointer + "</font>&nbsp;</a>";
 			}
 			else
 			{ 
-				sHTML += "<a title=\"" + sHint + "\" class='"+sStyle+"' href='javascript:void(0)'>&nbsp;<font class='js-day' data-day='" + datePointer +"' color=#548cab>" + datePointer + "&nbsp;</a>" ;
+				sHTML += "<a title=\"" + sHint + "\" class='"+sStyle+" day' href='javascript:void(0)'>&nbsp;<font class='js-day' data-day='" + datePointer +"' >" + datePointer + "&nbsp;</a>" ;
 			}
 
 			sHTML += "";
