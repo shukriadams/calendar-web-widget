@@ -6,7 +6,6 @@
     position:absolute;
     visibility:hidden;
     width:280px; // you can override the calender width by setting a width here
-
   }
 
   .header-button-wrapper{
@@ -42,6 +41,7 @@
       width:100%;
       padding:2px;
       font-family:sans-serif;
+      font-weight: bold;
       font-size:13px;
       color:#000000;
     }

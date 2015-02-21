@@ -35,7 +35,6 @@ var Calendar = function(options){
 	var	ie = document.all;
 	var	dom = document.getElementById;
 
-	var	ns4 = document.layers;
 	var	selectedDate = null;
     if (value){
         selectedDate = new Date(Date.parse(value.replace(/-/g, '/')));
@@ -62,7 +61,7 @@ var Calendar = function(options){
             "<table cellspacing='0' class='maintable'>" +
 			"<tr class='headerRow'>" +
 			"<td><table class='headerTable'><tr><td>" +
-			"<font ><B><div class='js-caption header-button-wrapper'></div></B></font>" +
+			"<div class='js-caption header-button-wrapper'></div>" +
 			"</td><td align=right style='vertical-align:top;'>" +
 			"<a href='javascript:void(0)' style='text-decoration:none;'><span class='js-close close'></span></a>" +
 			"</td></tr></table></td></tr><tr><td style='padding:5px' bgcolor=#ffffff><span class='js-content'></span></td></tr>";
@@ -93,45 +92,39 @@ var Calendar = function(options){
 
 
 	function init()	{
-		if (!ns4)
-		{
-			//if (!ie) {
-            if (selectedYear.toString().length === 3){
-                selectedYear += 1900
-            }
-            //}
 
-            // link to previous month
-            var sHTML1="<div class='js-decMonth  header-button small'>&nbsp<div class='left-arrow'></div></div>";
-            // link to next month
-            sHTML1+="<div class='js-incMonth header-button small'>&nbsp<div class='right-arrow'></div></div>";
-            // link to month drop-down list
-            sHTML1+="<div class='header-button'><div class='js-spanMonth'></div><div class='js-selectMonth selectMenu'></div></div>";
-            // link to year drop-down list
-            sHTML1+="<div class='header-button'><div class='js-spanYear'></div><div class='js-selectYear selectMenu'></div></div>";
+        if (selectedYear.toString().length === 3){
+            selectedYear += 1900
+        }
 
-            root.querySelectorAll(".js-caption")[0].innerHTML  =	sHTML1;
+        // link to previous month
+        var sHTML1="<div class='js-decMonth  header-button small'>&nbsp<div class='left-arrow'></div></div>";
+        // link to next month
+        sHTML1+="<div class='js-incMonth header-button small'>&nbsp<div class='right-arrow'></div></div>";
+        // link to month drop-down list
+        sHTML1+="<div class='header-button'><div class='js-spanMonth'></div><div class='js-selectMonth selectMenu'></div></div>";
+        // link to year drop-down list
+        sHTML1+="<div class='header-button'><div class='js-spanYear'></div><div class='js-selectYear selectMenu'></div></div>";
 
-			crossobj= root.querySelectorAll(".js-calendar")[0].style;
-			hideCalendar();
+        root.querySelectorAll(".js-caption")[0].innerHTML  =	sHTML1;
 
-			crossMonthObj=root.querySelectorAll(".js-selectMonth")[0].style;
+        crossobj= root.querySelectorAll(".js-calendar")[0].style;
+        hideCalendar();
 
-			crossYearObj=root.querySelectorAll(".js-selectYear")[0].style;
+        crossMonthObj=root.querySelectorAll(".js-selectMonth")[0].style;
 
-			monthConstructed=false;
-			yearConstructed=false;
+        crossYearObj=root.querySelectorAll(".js-selectYear")[0].style;
 
-			if (showToday==1)
-			{
-                root.querySelectorAll(".js-lblToday")[0].innerHTML = todayString + " <a title='"+gotoString+"' style='"+styleAnchor+"' class='js-focus-today' href='javascript:void(0)'>"+dayName[(selectedDate.getDay()-startAt==-1)?6:(selectedDate.getDay()-startAt)]+", " + selectedDay + " " + monthName[selectedMonth].substring(0,3)	+ "	" +	selectedYear	+ "</a>";
-			}
+        monthConstructed=false;
+        yearConstructed=false;
 
+        if (showToday==1)
+        {
+            root.querySelectorAll(".js-lblToday")[0].innerHTML = todayString + " <a title='"+gotoString+"' style='"+styleAnchor+"' class='js-focus-today' href='javascript:void(0)'>"+dayName[(selectedDate.getDay()-startAt==-1)?6:(selectedDate.getDay()-startAt)]+", " + selectedDay + " " + monthName[selectedMonth].substring(0,3)	+ "	" +	selectedYear	+ "</a>";
+        }
 
+        bPageLoaded=true;
 
-	
-			bPageLoaded=true;
-		}
 	}
 
 	function hideCalendar()	{
