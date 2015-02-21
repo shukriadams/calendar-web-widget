@@ -8,7 +8,8 @@ var Calendar = function(options){
 	var el = options.el,        // element that triggers calendar display. If options host is not defined, calendar is place in div after el.
 		host = options.host,	// optional host element to put calendar in. if not specified, calendar is place after el.
 		value = options.value,  // date value to preselect calendar to.
-        onValueChanged = options.onValueChanged,
+        onValueChanged = options.onValueChanged,// callback invoked when calender menu changes.
+        showToday = options.showToday == undefined ? true : options.showToday, // enables footer field with link to today
         format = options.format || 'dd/mm/yyyy'; // data format of calendar
 
     var self = this;
@@ -25,7 +26,6 @@ var Calendar = function(options){
 	var	fixedY = -1;			// y position (-1 if to appear below control)
 	var startAt = 1;			// 0 - sunday ; 1 - monday
 	var showWeekNumber = 0;	    // 0 - don't show; 1 - show
-	var showToday = 1;		    // 0 - don't show; 1 - show
 
 	var gotoString = "Go To Current Month";
 	var todayString = "Today is";
@@ -57,23 +57,28 @@ var Calendar = function(options){
 
 	if (dom)
 	{
-		var markup = "";
+		var markup = "<div class='js-calendar calendar-outer'>"+
+            "<div>" +
 
-		markup += "<div class='js-calendar calendar-outer'>"+
-            "<table cellspacing='0' class='maintable'>" +
-			"<tr class='headerRow'>" +
-			"<td><table class='headerTable'><tr><td>" +
+			"<table class='headerTable'><tr><td>" +
 			"<div class='js-caption header-button-wrapper'></div>" +
 			"</td><td align=right style='vertical-align:top;'>" +
 			"<a href='javascript:void(0)' style='text-decoration:none;'><span class='js-close close'></span></a>" +
-			"</td></tr></table></td></tr><tr><td style='padding:5px' bgcolor=#ffffff><span class='js-content'></span></td></tr>";
+			"</td></tr></table>" +
+
+            "</div>"+
+            "<div style='padding:5px' bgcolor=#ffffff>" +
+            "<span class='js-content'></span>" +
+            "</div>";
 			
-		if (showToday === 1)
+		if (showToday)
 		{
-			markup += "<tr class='today'><td style='padding:5px' align=center><span class='js-lblToday'></span></td></tr>";
+			markup += "<div class='today-footer' style='padding:5px' align=center>" +
+            "<span class='js-lblToday'></span>" +
+            "</div>";
 		}
 	
-		markup += "</table></div>";
+		markup += "</div>"; // remove table
 		root.innerHTML = markup;
 	}
 
@@ -120,7 +125,7 @@ var Calendar = function(options){
         monthConstructed=false;
         yearConstructed=false;
 
-        if (showToday==1)
+        if (showToday)
         {
             root.querySelectorAll(".js-lblToday")[0].innerHTML = todayString + " <a title='"+gotoString+"' style='"+styleAnchor+"' class='js-focus-today' href='javascript:void(0)'>"+dayName[(selectedDate.getDay()-startAt==-1)?6:(selectedDate.getDay()-startAt)]+", " + selectedDay + " " + monthName[selectedMonth].substring(0,3)	+ "	" +	selectedYear	+ "</a>";
         }

@@ -16,6 +16,7 @@
             host : document.getElementById('calendar1holder'),
             value : "2005-05-04",
             format : 'dd/mm/yyyy',
+            showToday: true,
             onValueChanged : function(sender, args){
                 console.log('returned value is : ' + args.date);
                 console.log('set value is also : ' + document.getElementById('calendar1').getAttribute('data-value'));
