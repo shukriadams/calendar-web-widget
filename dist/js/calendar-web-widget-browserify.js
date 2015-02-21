@@ -28,9 +28,12 @@ var Calendar = function(options){
         format = options.format || 'dd/mm/yyyy';
 
 
+    // force to false, doesn't work yet
+    inline = false;
 
-    var self = this;
-	var root = document.createElement("div");
+    var self = this,
+	    root = document.createElement("div");
+
 	root.className ='calendar-web-widget';
 
     if (host){
@@ -39,131 +42,188 @@ var Calendar = function(options){
     	el.parentNode.insertBefore(root, el.nextSibling);
 	}
 
-	var	fixedX = -1;			// x position (-1 if to appear below control)
-	var	fixedY = -1;			// y position (-1 if to appear below control)
-	var startAt = startAtMonday ? 1 : 0;			// 0 - sunday ; 1 - monday
-	var showWeekNumber = 0;	    // 0 - don't show; 1 - show
+	var startAt = startAtMonday ? 1 : 0,			// 0 - sunday ; 1 - monday
+	    showWeekNumber = 0,	    // 0 - don't show; 1 - show
+	    gotoString = "Go To Current Month",
+	    todayString = "Today is",
+	    weekString = "Wk",
+    	monthMenu,
+        yearMenu,
+        monthSelected,
+        yearSelected,
+        dateSelected,
+        omonthSelected,
+        oyearSelected,
+        odateSelected,
+        monthConstructed = false,
+        monthMenuShowing = false,
+        yearConstructed = false,
+        yearMenuShowing = false,
+        intervalID1, intervalID2, timeoutID1, timeoutID2, ctlToPlaceValue, ctlNow, dateFormat, nStartingYear,
+	    bPageLoaded = false,
+        bShow = false,
+    	selectedDate = null;
 
-	var gotoString = "Go To Current Month";
-	var todayString = "Today is";
-	var weekString = "Wk";
-
-	var	crossobj, crossMonthObj, crossYearObj, monthSelected, yearSelected, dateSelected, omonthSelected, oyearSelected, odateSelected, monthConstructed, yearConstructed, intervalID1, intervalID2, timeoutID1, timeoutID2, ctlToPlaceValue, ctlNow, dateFormat, nStartingYear;
-
-	var	bPageLoaded=false;
-	var	ie = document.all;
-	var	dom = document.getElementById;
-
-	var	selectedDate = null;
     if (value){
         selectedDate = new Date(Date.parse(value.replace(/-/g, '/')));
     } else {
-        selectedDate = new	Date();
+        selectedDate = new Date();
     }
-
 
 	var	selectedDay	= selectedDate.getDate();
 	var	selectedMonth = selectedDate.getMonth();
 	var	selectedYear = selectedDate.getYear();
 
+    if (selectedYear.toString().length === 3){
+        selectedYear += 1900
+    }
 
-	var bShow = false;
-
-	var HolidaysCounter = 0;
-	var Holidays = [];
-
-	if (dom)
-	{
-		var markup =
-            // start outer container
-            "<div class='js-calendar-web-widget-container calendar-web-widget-container " + (inline ? "calendar-web-widget-container--inline" : "calendar-web-widget-container--float") + "'>"+
-            // inner row 1 - header
-			"<div class='js-calendar-web-widget-header calendar-web-widget-header'></div>" +
-            // inner row 2 - calendar
-            "<div class='js-calendar-web-widget-content calendar-web-widget-content'></div>";
-
-		if (showToday)
-		{
-            // inner row 3 - today footer
-            markup += "<div class='today-footer js-lblToday'></div>";
-		}
-
-        // end outer container
-		markup += "</div>";
-
-		root.innerHTML = markup;
-	}
-
-	if (startAtMonday)
-	{
+    if (startAtMonday)
+    {
         // move first (sunday) to end of array
         days.push(days[0]);
         days.splice(0, 1)
-	}
-
-	var	styleAnchor=" anchor",
-		styleLightBorder=" bordered";
+    }
 
 
-	function init()	{
+    var markup =
+        // start outer container
+        "<div class='js-calendar-web-widget-container calendar-web-widget-container " + (inline ? "calendar-web-widget-container--inline" : "calendar-web-widget-container--float") + "'>"+
+        // inner row 1 - header
+        "<div class='js-calendar-web-widget-header calendar-web-widget-header'></div>" +
+        // inner row 2 - calendar
+        "<div class='js-calendar-web-widget-content calendar-web-widget-content'></div>";
 
-        if (selectedYear.toString().length === 3){
-            selectedYear += 1900
-        }
+    if (showToday)
+    {
+        // inner row 3 - today footer
+        markup += "<div class='today-footer js-lblToday '></div>";
+    }
 
-        // link to previous month
-        var markup="<div class='js-decMonth header-item prev'><div class='left-arrow'></div></div>";
-
-        if (showMonthAndYearPickers){
-            // link to month drop-down list
-            markup+="<div class='header-item'><div class='js-calendar-web-widget-month-container calendar-web-widget-month-container'><div class='js-spanMonth'></div><div class='js-selectMonth selectMenu'></div></div></div>";
-
-            // link to year drop-down list
-            markup+="<div class='header-item'><div class='js-calendar-web-widget-year-container calendar-web-widget-year-container'><div class='js-spanYear'></div><div class='js-selectYear selectMenu'></div></div></div>";
-        }
-
-        // link to next month
-        markup+="<div class='js-incMonth header-item next'><div class='right-arrow'></div></div>";
-
-        find(".js-calendar-web-widget-header").innerHTML  =	markup;
-
-        crossobj= find(".js-calendar-web-widget-container").style;
+    // end outer container
+    markup += "</div>";
+    root.innerHTML = markup;
 
 
-        if (showMonthAndYearPickers){
-            crossMonthObj = find(".js-selectMonth").style;
-            crossYearObj = find(".js-selectYear").style;
-        }
 
-        monthConstructed=false;
-        yearConstructed=false;
+	var	calendarContainer = find('.js-calendar-web-widget-container');
 
-        if (showToday)
+
+    // link to previous month
+    markup="<div class='js-decMonth header-item prev'><div class='left-arrow'></div></div>";
+
+    if (showMonthAndYearPickers){
+        // link to month drop-down list
+        markup+="<div class='header-item'><div class='js-calendar-web-widget-month-container calendar-web-widget-month-container'><div class='js-spanMonth'></div><div class='js-selectMonth selectMenu'></div></div></div>";
+
+        // link to year drop-down list
+        markup+="<div class='header-item'><div class='js-calendar-web-widget-year-container calendar-web-widget-year-container'><div class='js-spanYear'></div><div class='js-selectYear selectMenu'></div></div></div>";
+    }
+
+    // link to next month
+    markup+="<div class='js-incMonth header-item next'><div class='right-arrow'></div></div>";
+
+    find(".js-calendar-web-widget-header").innerHTML  =	markup;
+
+    if (showMonthAndYearPickers){
+        monthMenu = find(".js-selectMonth");
+        yearMenu = find(".js-selectYear");
+    }
+
+    if (showToday)
+    {
+        find(".js-lblToday").innerHTML = todayString + " <a title='"+gotoString+"' class='js-focus-today' href='javascript:void(0)'>" + days[(selectedDate.getDay()-startAt==-1)?6:(selectedDate.getDay()-startAt)]+", " + selectedDay + " " + months[selectedMonth].substring(0,3)	+ "	" +	selectedYear	+ "</a>";
+    }
+
+    bPageLoaded=true;
+
+    hideCalendar();
+
+    // bind events
+    on(document, "keypress", function () {
+        if (event.keyCode==27)
         {
-            find(".js-lblToday").innerHTML = todayString + " <a title='"+gotoString+"' style='"+styleAnchor+"' class='js-focus-today' href='javascript:void(0)'>" + days[(selectedDate.getDay()-startAt==-1)?6:(selectedDate.getDay()-startAt)]+", " + selectedDay + " " + months[selectedMonth].substring(0,3)	+ "	" +	selectedYear	+ "</a>";
-        }
-
-        bPageLoaded=true;
-
-        //if (inline)
-        //    openCalendar(el,el,format);
-        //else
             hideCalendar();
-	}
+        }
+    });
+
+    on(document, "click",function(e) {
+        // ignore events from launching element
+        if (!e.target)e.target = e.srcElement;
+
+        if (e.target == el)
+            return;
+
+        if (bShow && !clickedMenu(e.target)){
+            hideCalendar();
+        }
+    });
+
+    var btnFocusToday = find('.js-focus-today');
+    if (btnFocusToday){
+        on(btnFocusToday, "click", function(){
+            monthSelected=selectedMonth;
+            yearSelected=selectedYear;
+            constructCalendar();
+        });
+    }
+
+    if (showMonthAndYearPickers){
+        on(find('.js-calendar-web-widget-year-container'), "click", function(){
+            if (yearMenuShowing){
+                popDownYear();
+            } else {
+                popUpYear();
+            }
+        });
+        on(find('.js-calendar-web-widget-month-container'), "click", function(){
+            if (monthMenuShowing){
+                popDownMonth();
+            } else {
+                popUpMonth();
+            }
+        });
+    }
+
+    var btnDecMonth = find('.js-decMonth');
+    on(btnDecMonth, "click", decMonth);
+    on(btnDecMonth, "mouseout", function(){
+        clearInterval(intervalID1);
+    });
+    on(btnDecMonth, "mousedown" ,function(){
+        clearTimeout(timeoutID1);
+        timeoutID1=setTimeout(StartDecMonth,500);
+    });
+    on(btnDecMonth, "mouseup", function(){
+        clearTimeout(timeoutID1);
+        clearInterval(intervalID1);
+    });
+
+
+    var btnIncMonth = find('.js-incMonth');
+    on(btnIncMonth, "click", incMonth);
+    on(btnIncMonth, "mouseout", function(){
+        clearInterval(intervalID1);
+    });
+    on(btnIncMonth, "mousedown", function(){
+        clearTimeout(timeoutID1);
+        timeoutID1=setTimeout(StartIncMonth,500);
+    });
+    on(btnIncMonth, "mouseup", function(){
+        clearTimeout(timeoutID1);
+        clearInterval(intervalID1);
+    });
+
+    on(el, "click", function(){
+        openCalendar(el,el,format);
+    });
 
 	function hideCalendar()	{
-        // todo : find better way to bypass hide logic
-
-        if (crossobj != null){
-            crossobj.visibility="hidden";
+        if (!inline){
+            calendarContainer.classList.add('calendar-web-widget--hidden');
         }
-        if (crossMonthObj != null){
-            crossMonthObj.visibility="hidden";
-        }
-        if (crossYearObj !=	null){
-            crossYearObj.visibility="hidden";
-        }
-
+        popDownMonth();
+        popDownYear();
         bShow = false;
 
 	}
@@ -271,9 +331,9 @@ var Calendar = function(options){
 	}
 
     function handleMonthSelect(e){
-        if (!e.target)e.target = e.srcElement;
+        if (!e.target)
+            e.target = e.srcElement;
 
-        monthConstructed=false;
         monthSelected = parseInt(e.target.getAttribute('data-month'));
         constructCalendar();
         popDownMonth();
@@ -282,17 +342,18 @@ var Calendar = function(options){
 
 	function popUpMonth() {
 		constructMonth();
-		crossMonthObj.visibility = (dom||ie)? "visible"	: "show";
-		//crossMonthObj.left = parseInt(crossobj.left) + 50;
-		//crossMonthObj.top =	parseInt(crossobj.top) + 26;
+        if(monthMenu){
+            monthMenu.classList.remove('calendar-web-widget--hidden');
+        }
 	}
 
 	function popDownMonth()	{
-		crossMonthObj.visibility= "hidden";
-        monthConstructed = false;
-	}
+        if(monthMenu){
+            monthMenu.classList.add('calendar-web-widget--hidden');
+        }
 
-	/*** Year Pulldown ***/
+        monthMenuShowing = false;
+	}
 
 	function incYear() {
 		for	(var i=0; i<7; i++){
@@ -328,7 +389,6 @@ var Calendar = function(options){
 
 	function selectYear(nYear) {
 		yearSelected=parseInt(nYear+nStartingYear);
-		yearConstructed=false;
 		constructCalendar();
 		popDownYear();
 	}
@@ -413,16 +473,19 @@ var Calendar = function(options){
 		clearTimeout(timeoutID1);
 		clearInterval(intervalID2);
 		clearTimeout(timeoutID2);
-		crossYearObj.visibility= "hidden";
-        yearConstructed = false;
+        if(yearMenu){
+            yearMenu.classList.add('calendar-web-widget--hidden');
+        }
+        yearMenuShowing = false;
 	}
 
 	function popUpYear() {
 		constructYear();
-		crossYearObj.visibility	= (dom||ie)? "visible" : "show";
+        if(yearMenu){
+            yearMenu.classList.remove('calendar-web-widget--hidden');
+        }
 	}
 
-	/*** calendar ***/
    function WeekNbr(n) {
       // Algorithm used:
       // From Klaus Tondering's Calendar document (The Authority/Guru)
@@ -511,24 +574,13 @@ var Calendar = function(options){
 		{
 			dayPointer++;
 			sHTML += "<td align=right>";
-			var sStyle=styleAnchor;
+			var sStyle='';
 			if ((datePointer == odateSelected) && (monthSelected == omonthSelected)	&& (yearSelected == oyearSelected))
 			{ 
-				sStyle+=" " + styleLightBorder; 
+				sStyle+= " calendar-web-widget-bordered ";
 			}
 
 			var sHint = '';
-			for (var k = 0; k < HolidaysCounter; k ++)
-			{
-				if ((parseInt(Holidays[k].d)==datePointer)&&(parseInt(Holidays[k].m)==(monthSelected+1)))
-				{
-					if ((parseInt(Holidays[k].y)==0)||((parseInt(Holidays[k].y)==yearSelected)&&(parseInt(Holidays[k].y)!=0)))
-					{
-						sStyle+=" holiday";
-						sHint+=sHint==""?Holidays[k].desc:"\n"+Holidays[k].desc;
-					}
-				}
-			}
 
 			var regexp= /\"/g;
 			sHint = sHint.replace(regexp,"&quot;");
@@ -576,13 +628,18 @@ var Calendar = function(options){
 		closeCalendar();
 	}
 
+    function isVisible(){
+        return !calendarContainer.classList.contains('calendar-web-widget--hidden');
+
+    }
+
 	function openCalendar(ctl,	ctl2, format) {
 		var	leftpos=0,
 			toppos=0;
 		
 		if (bPageLoaded)
 		{
-			if ( crossobj.visibility ==	"hidden" ) {
+			if (! isVisible() ) {
 				ctlToPlaceValue	= ctl2;
 				dateFormat=format;
 
@@ -673,17 +730,15 @@ var Calendar = function(options){
 				} while(aTag.tagName!="BODY");
  //             controlling the position of calendar
  
-				crossobj.left =	fixedX==-1 ? ctl.offsetLeft	+ leftpos + 3 :	fixedX;
-				crossobj.top = fixedY==-1 ?	ctl.offsetTop +	toppos + ctl.offsetHeight + 5 :	fixedY;
 				constructCalendar (1, monthSelected, yearSelected);
-				crossobj.visibility=(dom||ie)? "visible" : "show";
+                calendarContainer.classList.remove('calendar-web-widget--hidden');
 
 				bShow = true;
 			}
 			else
 			{
 				hideCalendar();
-				if (ctlNow!=ctl) {openCalendar(ctl, ctl2, format)}
+				//if (ctlNow!=ctl) {openCalendar(ctl, ctl2, format)}
 			}
 			ctlNow = ctl
 		}
@@ -720,87 +775,6 @@ var Calendar = function(options){
         return results;
     }
 
-	// create calendar
-	init();
-
-	// bind events
-	on(document, "keypress", function () {
-		if (event.keyCode==27) 
-		{
-			hideCalendar();
-		}
-	});
-
-    on(document, "click",function(e) {
-        // ignore events from launching element
-        if (!e.target)e.target = e.srcElement;
-
-        if (e.target == el)
-            return;
-
-        if (bShow && !clickedMenu(e.target)){
-            hideCalendar();
-        }
-	});
-
-    var btnFocusToday = find('.js-focus-today');
-    if (btnFocusToday){
-        on(btnFocusToday, "click", function(){
-            monthSelected=selectedMonth;
-            yearSelected=selectedYear;
-            constructCalendar();
-        });
-    }
-
-    if (showMonthAndYearPickers){
-        on(find('.js-calendar-web-widget-year-container'), "click", function(){
-            if (yearConstructed){
-                popDownYear();
-            } else {
-               popUpYear();
-            }
-        });
-        on(find('.js-calendar-web-widget-month-container'), "click", function(){
-            if (monthConstructed){
-                popDownMonth();
-            } else {
-                popUpMonth();
-            }
-        });
-    }
-
-    var btnDecMonth = find('.js-decMonth');
-    on(btnDecMonth, "click", decMonth);
-    on(btnDecMonth, "mouseout", function(){
-        clearInterval(intervalID1);
-    });
-    on(btnDecMonth, "mousedown" ,function(){
-        clearTimeout(timeoutID1);
-        timeoutID1=setTimeout(StartDecMonth,500);
-    });
-    on(btnDecMonth, "mouseup", function(){
-        clearTimeout(timeoutID1);
-        clearInterval(intervalID1);
-    });
-
-
-    var btnIncMonth =find('.js-incMonth');
-    on(btnIncMonth, "click", incMonth);
-    on(btnIncMonth, "mouseout", function(){
-        clearInterval(intervalID1);
-    });
-    on(btnIncMonth, "mousedown", function(){
-        clearTimeout(timeoutID1);
-        timeoutID1=setTimeout(StartIncMonth,500);
-    });
-    on(btnIncMonth, "mouseup", function(){
-        clearTimeout(timeoutID1);
-        clearInterval(intervalID1);
-    });
-
-    on(el, "click", function(){
-		openCalendar(el,el,format);
-	});
 };
 
 

@@ -4,12 +4,20 @@
   $calender-border-curve:5px;
   $calender-width:280px;
 
+  a {
+    text-decoration: none;
+  }
+
+  .calendar-web-widget--hidden {
+    display:none;
+  }
+
   .calendar-web-widget-container {
     width:$calender-width; // you can override the calender width by setting a width here
     font-family:sans-serif;
     font-size:11px;
     border-width:1px;
-    visibility:hidden;
+
     border-style:solid;
     border-color:#395d9c;
     background-color: #F3EFEC;
@@ -33,7 +41,6 @@
   .calendar-web-widget-container--float{
     z-index:999;
     position:absolute;
-
   }
 
   .calendar-web-widget-header{
@@ -83,15 +90,12 @@
     background-color:#FFDDDD;
   }
 
-  .bordered{
+  .calendar-web-widget-bordered{
     border-style:solid;
     border-width:1px;
     border-color:#a0a0a0;
   }
 
-  .anchor{
-    text-decoration:none;
-  }
 
   .innerTable{
     width:100%;
@@ -156,7 +160,6 @@
   .selectMenu{
     z-index:999;
     position:absolute;
-    visibility:hidden;
     //margin-left: 18px;
   }
 
