@@ -101,13 +101,13 @@ var Calendar = function(options){
             //}
 
             // link to previous month
-            var sHTML1="<div class='js-decMonth  header-button small'>&nbsp<div class='left-arrow'></div>&nbsp</div>&nbsp;";
+            var sHTML1="<div class='js-decMonth  header-button small'>&nbsp<div class='left-arrow'></div></div>";
             // link to next month
-            sHTML1+="<div class='js-incMonth header-button small'>&nbsp<div class='right-arrow'></div>&nbsp</div>&nbsp";
+            sHTML1+="<div class='js-incMonth header-button small'>&nbsp<div class='right-arrow'></div></div>";
             // link to month drop-down list
-            sHTML1+="<div class='header-button'><div class='js-spanMonth'></div><div class='js-selectMonth selectMenu'></div>&nbsp;</div>";
+            sHTML1+="<div class='header-button'><div class='js-spanMonth'></div><div class='js-selectMonth selectMenu'></div></div>";
             // link to year drop-down list
-            sHTML1+="<div class='header-button'><div class='js-spanYear'></div><div class='js-selectYear selectMenu'></div>&nbsp;</div>";
+            sHTML1+="<div class='header-button'><div class='js-spanYear'></div><div class='js-selectYear selectMenu'></div></div>";
 
             root.querySelectorAll(".js-caption")[0].innerHTML  =	sHTML1;
 
