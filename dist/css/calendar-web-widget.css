@@ -1,26 +1,4 @@
 /* calendar-web-widget | https://github.com/shukriadams/calendar-web-widget | License : GPLv2 */
-/* line 2, ../../src/scss/calendar-web-widget.scss */
-.calendar-web-widget {
-  /*
-  .close
-  {
-    display:block;
-    box-sizing:border-box;
-    width:12px;
-    height:12px;
-    border-width:2px;
-    border-style: solid;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    border-color:#880000;
-    //background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%),-webkit-linear-gradient(45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%);
-
-    background-color:#880000;
-    transition: all 0s ease;
-  }
-*/
-}
 /* line 4, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-outer {
   z-index: 999;
@@ -39,11 +17,11 @@
   border-width: 0;
   cursor: pointer;
 }
-/* line 20, ../../src/scss/calendar-web-widget.scss */
+/* line 19, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .header-button-wrapper .header-button.small {
   width: 20px;
 }
-/* line 26, ../../src/scss/calendar-web-widget.scss */
+/* line 25, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .maintable {
   font-family: sans-serif;
   font-size: 13px;
@@ -53,14 +31,14 @@
   background-color: #396da5;
   width: 100%;
 }
-/* line 35, ../../src/scss/calendar-web-widget.scss */
+/* line 34, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .maintable .headerRow {
   border-width: 1px;
   border-style: solid;
   border-color: #395d9c;
   background-color: #F3EFEC;
 }
-/* line 46, ../../src/scss/calendar-web-widget.scss */
+/* line 41, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .maintable .headerTable {
   width: 100%;
   padding: 2px;
@@ -68,49 +46,49 @@
   font-size: 13px;
   color: #000000;
 }
-/* line 54, ../../src/scss/calendar-web-widget.scss */
+/* line 49, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .maintable .holiday {
   background-color: #FFDDDD;
 }
-/* line 58, ../../src/scss/calendar-web-widget.scss */
+/* line 53, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .maintable .bordered {
   border-style: solid;
   border-width: 1px;
   border-color: #a0a0a0;
 }
-/* line 64, ../../src/scss/calendar-web-widget.scss */
+/* line 59, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .maintable .anchor {
   text-decoration: none;
 }
-/* line 69, ../../src/scss/calendar-web-widget.scss */
+/* line 64, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .innerTable {
   width: 100%;
   font-family: sans-serif;
   font-size: 14px;
   font-weight: bold;
 }
-/* line 76, ../../src/scss/calendar-web-widget.scss */
+/* line 71, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .today {
   background-color: #F3EFEC;
 }
-/* line 80, ../../src/scss/calendar-web-widget.scss */
+/* line 75, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .day {
   color: #548cab;
 }
-/* line 82, ../../src/scss/calendar-web-widget.scss */
+/* line 77, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .day.today {
   color: #ff0000;
 }
-/* line 85, ../../src/scss/calendar-web-widget.scss */
+/* line 80, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .day.sunday {
   color: #909090;
 }
-/* line 88, ../../src/scss/calendar-web-widget.scss */
+/* line 83, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .day:hover {
   background-color: #548cab;
   color: white;
 }
-/* line 94, ../../src/scss/calendar-web-widget.scss */
+/* line 89, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .dropdown {
   font-family: sans-serif;
   font-size: 15px;
@@ -119,44 +97,44 @@
   border-color: #a0a0a0;
   background-color: white;
 }
-/* line 102, ../../src/scss/calendar-web-widget.scss */
+/* line 97, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .dropdown .dropdown-item {
   padding-top: 2px;
 }
-/* line 104, ../../src/scss/calendar-web-widget.scss */
+/* line 99, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .dropdown .dropdown-item:hover {
   background-color: #cee7ff;
 }
-/* line 110, ../../src/scss/calendar-web-widget.scss */
+/* line 105, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .month-dropdown {
   width: 86px;
 }
-/* line 114, ../../src/scss/calendar-web-widget.scss */
+/* line 109, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .year-dropdown {
   width: 50px;
 }
-/* line 116, ../../src/scss/calendar-web-widget.scss */
+/* line 111, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .year-dropdown .dropdown-item {
   text-align: center;
 }
-/* line 121, ../../src/scss/calendar-web-widget.scss */
+/* line 116, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .selectMenu {
   z-index: 999;
   position: absolute;
   visibility: hidden;
 }
-/* line 147, ../../src/scss/calendar-web-widget.scss */
+/* line 122, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .close {
   height: 18px;
   width: 17px;
   background-color: #880000;
   text-decoration: none;
-  top: 9px;
-  right: 7px;
+  top: 6px;
+  right: 6px;
   position: absolute;
   display: block;
 }
-/* line 157, ../../src/scss/calendar-web-widget.scss */
+/* line 132, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .close:after {
   position: relative;
   content: "\d7";
@@ -166,7 +144,7 @@
   top: -3px;
   left: -2px;
 }
-/* line 172, ../../src/scss/calendar-web-widget.scss */
+/* line 142, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .down-arrow {
   border-left: 8px solid transparent;
   border-right: 10px solid transparent;
@@ -174,7 +152,7 @@
   cursor: pointer;
   display: inline-block;
 }
-/* line 180, ../../src/scss/calendar-web-widget.scss */
+/* line 150, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .left-arrow {
   border-top: 6px solid transparent;
   border-right: 8px solid #880000;
@@ -183,7 +161,7 @@
   display: inline-block;
   margin-bottom: -2px;
 }
-/* line 189, ../../src/scss/calendar-web-widget.scss */
+/* line 159, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .right-arrow {
   border-top: 6px solid transparent;
   border-left: 8px solid #880000;
