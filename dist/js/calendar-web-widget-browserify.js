@@ -3,12 +3,31 @@
 
 var Calendar = function(options){
 
-	var el = options.el,        // element that triggers calendar display. If options host is not defined, calendar is place in div after el.
-		host = options.host,	// optional host element to put calendar in. if not specified, calendar is place after el.
-		value = options.value,  // date value to preselect calendar to.
-        onValueChanged = options.onValueChanged,// callback invoked when calender menu changes.
-        showToday = options.showToday == undefined ? true : options.showToday, // enables footer field with link to today
-        format = options.format || 'dd/mm/yyyy'; // data format of calendar
+	var
+        // element that triggers calendar display. If options host is not defined, calendar is place in div after el.
+        el = options.el,
+        // optional host element to put calendar in. if not specified, calendar is place after el.
+		host = options.host,
+        // if true calendar is always displayed and does not float above other dom elements
+        inline = options.inline === undefined ? false : options.inline,
+        // date value to preselect calendar to.
+		value = options.value,
+        // callback invoked when calender menu changes.
+        onValueChanged = options.onValueChanged,
+        // enables footer field with link to today
+        showToday = options.showToday === undefined ? true : options.showToday,
+        // array of 12 month names starting with January
+        months = options.months || ["January","February","March","April","May","June","July","August","September","October","November","December"],
+        // array of 7 days, starting with Sunday
+        days = options.days || ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+        // if false, starts on sunday
+        startAtMonday = options.startAtMonday === undefined ? true : options.startAtMonday,
+        // if true, enables month and year dropdowns in calendar header
+        showMonthAndYearPickers  = options.showMonthAndYearPickers === undefined ? false : options.showMonthAndYearPickers,
+        // data format of calendar
+        format = options.format || 'dd/mm/yyyy';
+
+
 
     var self = this;
 	var root = document.createElement("div");
@@ -22,7 +41,7 @@ var Calendar = function(options){
 
 	var	fixedX = -1;			// x position (-1 if to appear below control)
 	var	fixedY = -1;			// y position (-1 if to appear below control)
-	var startAt = 1;			// 0 - sunday ; 1 - monday
+	var startAt = startAtMonday ? 1 : 0;			// 0 - sunday ; 1 - monday
 	var showWeekNumber = 0;	    // 0 - don't show; 1 - show
 
 	var gotoString = "Go To Current Month";
@@ -55,41 +74,31 @@ var Calendar = function(options){
 
 	if (dom)
 	{
-		var markup = "<div class='js-calendar calendar-outer'>"+
-            "<div>" +
+		var markup =
+            // start outer container
+            "<div class='js-calendar-web-widget-container calendar-web-widget-container " + (inline ? "calendar-web-widget-container--inline" : "calendar-web-widget-container--float") + "'>"+
+            // inner row 1 - header
+			"<div class='js-calendar-web-widget-header calendar-web-widget-header'></div>" +
+            // inner row 2 - calendar
+            "<div class='js-calendar-web-widget-content calendar-web-widget-content'></div>";
 
-			"<table class='headerTable'><tr><td>" +
-			"<div class='js-caption header-button-wrapper'></div>" +
-			"</td><td align=right style='vertical-align:top;'>" +
-			"<a href='javascript:void(0)' style='text-decoration:none;'><span class='js-close close'></span></a>" +
-			"</td></tr></table>" +
-
-            "</div>"+
-            "<div style='padding:5px' bgcolor=#ffffff>" +
-            "<span class='js-content'></span>" +
-            "</div>";
-			
 		if (showToday)
 		{
-			markup += "<div class='today-footer' style='padding:5px' align=center>" +
-            "<span class='js-lblToday'></span>" +
-            "</div>";
+            // inner row 3 - today footer
+            markup += "<div class='today-footer js-lblToday'></div>";
 		}
-	
-		markup += "</div>"; // remove table
+
+        // end outer container
+		markup += "</div>";
+
 		root.innerHTML = markup;
 	}
 
-	var	dayName = '',
-		monthName =	["January","February","March","April","May","June","July","August","September","October","November","December"];
-
-	if (startAt === 0)
+	if (startAtMonday)
 	{
-		dayName = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-	}
-	else
-	{
-		dayName = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+        // move first (sunday) to end of array
+        days.push(days[0]);
+        days.splice(0, 1)
 	}
 
 	var	styleAnchor=" anchor",
@@ -103,47 +112,60 @@ var Calendar = function(options){
         }
 
         // link to previous month
-        var sHTML1="<div class='js-decMonth  header-button small'>&nbsp<div class='left-arrow'></div></div>";
+        var markup="<div class='js-decMonth header-item prev'><div class='left-arrow'></div></div>";
+
+        if (showMonthAndYearPickers){
+            // link to month drop-down list
+            markup+="<div class='header-item'><div class='js-calendar-web-widget-month-container calendar-web-widget-month-container'><div class='js-spanMonth'></div><div class='js-selectMonth selectMenu'></div></div></div>";
+
+            // link to year drop-down list
+            markup+="<div class='header-item'><div class='js-calendar-web-widget-year-container calendar-web-widget-year-container'><div class='js-spanYear'></div><div class='js-selectYear selectMenu'></div></div></div>";
+        }
+
         // link to next month
-        sHTML1+="<div class='js-incMonth header-button small'>&nbsp<div class='right-arrow'></div></div>";
-        // link to month drop-down list
-        sHTML1+="<div class='header-button'><div class='js-spanMonth'></div><div class='js-selectMonth selectMenu'></div></div>";
-        // link to year drop-down list
-        sHTML1+="<div class='header-button'><div class='js-spanYear'></div><div class='js-selectYear selectMenu'></div></div>";
+        markup+="<div class='js-incMonth header-item next'><div class='right-arrow'></div></div>";
 
-        root.querySelectorAll(".js-caption")[0].innerHTML  =	sHTML1;
+        find(".js-calendar-web-widget-header").innerHTML  =	markup;
 
-        crossobj= root.querySelectorAll(".js-calendar")[0].style;
-        hideCalendar();
+        crossobj= find(".js-calendar-web-widget-container").style;
 
-        crossMonthObj=root.querySelectorAll(".js-selectMonth")[0].style;
 
-        crossYearObj=root.querySelectorAll(".js-selectYear")[0].style;
+        if (showMonthAndYearPickers){
+            crossMonthObj = find(".js-selectMonth").style;
+            crossYearObj = find(".js-selectYear").style;
+        }
 
         monthConstructed=false;
         yearConstructed=false;
 
         if (showToday)
         {
-            root.querySelectorAll(".js-lblToday")[0].innerHTML = todayString + " <a title='"+gotoString+"' style='"+styleAnchor+"' class='js-focus-today' href='javascript:void(0)'>"+dayName[(selectedDate.getDay()-startAt==-1)?6:(selectedDate.getDay()-startAt)]+", " + selectedDay + " " + monthName[selectedMonth].substring(0,3)	+ "	" +	selectedYear	+ "</a>";
+            find(".js-lblToday").innerHTML = todayString + " <a title='"+gotoString+"' style='"+styleAnchor+"' class='js-focus-today' href='javascript:void(0)'>" + days[(selectedDate.getDay()-startAt==-1)?6:(selectedDate.getDay()-startAt)]+", " + selectedDay + " " + months[selectedMonth].substring(0,3)	+ "	" +	selectedYear	+ "</a>";
         }
 
         bPageLoaded=true;
 
+        //if (inline)
+        //    openCalendar(el,el,format);
+        //else
+            hideCalendar();
 	}
 
 	function hideCalendar()	{
-		if (crossobj != null){
-			crossobj.visibility="hidden";
-		}
-		if (crossMonthObj != null){
+        // todo : find better way to bypass hide logic
+
+        if (crossobj != null){
+            crossobj.visibility="hidden";
+        }
+        if (crossMonthObj != null){
             crossMonthObj.visibility="hidden";
         }
-		if (crossYearObj !=	null){
+        if (crossYearObj !=	null){
             crossYearObj.visibility="hidden";
         }
 
         bShow = false;
+
 	}
 
 	function padZero(num) {
@@ -162,7 +184,7 @@ var Calendar = function(options){
 		sTmp = sTmp.replace	("m","<m>");
 		sTmp = sTmp.replace	("<m>",m+1);
 		sTmp = sTmp.replace	("<n>",padZero(m+1));
-		sTmp = sTmp.replace	("<o>",monthName[m]);
+		sTmp = sTmp.replace	("<o>",months[m]);
 		return sTmp.replace ("yyyy",y)
 	}
 
@@ -176,13 +198,14 @@ var Calendar = function(options){
 
         ctlToPlaceValue.setAttribute('data-value', selectedDate);
 
-		if (ctlToPlaceValue.hasAttribute('value'))
-			ctlToPlaceValue.value =selectedDate	;
-		else
-			ctlToPlaceValue.innerHTML = selectedDate;
+        if (ctlToPlaceValue.hasAttribute('value'))
+            ctlToPlaceValue.value =selectedDate	;
+        else
+            ctlToPlaceValue.innerHTML = selectedDate;
 
         if (onValueChanged)
             onValueChanged(self, { date : selectedDate});
+
 	}
 
 	/*** Month Pulldown	***/
@@ -219,21 +242,21 @@ var Calendar = function(options){
 		if (!monthConstructed) {
 			var sHTML =	'';
 			for	(var i=0; i<12;	i++) {
-				var sName =	monthName[i];
+				var sName =	months[i];
 				if (i==monthSelected){
 					sName =	"<B>" +	sName +	"</B>";
 				}
 				sHTML += "<tr><td class='js-month month dropdown-item' data-month='" + i + "' id='m" + i + "' style='cursor:pointer'>&nbsp;" + sName + "&nbsp;</td></tr>";
 			}
 
-            root.querySelectorAll(".js-selectMonth")[0].innerHTML = "<table class='js-month-table dropdown month-dropdown'  cellspacing=0>" + sHTML +	"</table>";
+            find(".js-selectMonth").innerHTML = "<table class='js-month-table dropdown month-dropdown'  cellspacing=0>" + sHTML +	"</table>";
 
-            var months = root.querySelectorAll('.js-month');
-            for (var j = 0 ; j < months.length ; j ++){
-                var month = months[j];
+            var mnths = find('.js-month');
+            for (var j = 0 ; j < mnths.length ; j ++){
+                var month = mnths[j];
                 on(month, "click", handleMonthSelect);
             }
-            var monthTable = root.querySelectorAll('.js-month-table')[0];
+            var monthTable = find('.js-month-table');
             on(monthTable, "mouseover", function(){
                 clearTimeout(timeoutID1);
             });
@@ -266,6 +289,7 @@ var Calendar = function(options){
 
 	function popDownMonth()	{
 		crossMonthObj.visibility= "hidden";
+        monthConstructed = false;
 	}
 
 	/*** Year Pulldown ***/
@@ -281,7 +305,7 @@ var Calendar = function(options){
 			} else { 
 				txtYear = "&nbsp;" + newYear + "&nbsp;";
 			}
-            root.querySelectorAll(".js-y"+i)[0].innerHTML = txtYear
+            find(".js-y"+i).innerHTML = txtYear
 		}
 		nStartingYear ++;
 	}
@@ -297,7 +321,7 @@ var Calendar = function(options){
 			} else { 
 				txtYear =	"&nbsp;" + newYear + "&nbsp;" 
 			}
-            root.querySelectorAll(".js-y"+i)[0].innerHTML = txtYear
+            find(".js-y"+i).innerHTML = txtYear
 		}
 		nStartingYear --;
 	}
@@ -331,17 +355,17 @@ var Calendar = function(options){
 
         html += "<tr><td align='center' class='js-year-inc dropdown-item' style='cursor:pointer'>+</td></tr>";
 
-        root.querySelectorAll('.js-selectYear')[0].innerHTML = "<table class='dropdown year-dropdown js-year-dropdown' cellspacing=0>"	+ html	+ "</table>";
+        find('.js-selectYear').innerHTML = "<table class='dropdown year-dropdown js-year-dropdown' cellspacing=0>"	+ html	+ "</table>";
 
-        var years = root.querySelectorAll('.js-year');
+        var years = find('.js-year');
         for (var i = 0 ; i < years.length ; i ++){
             on(years[i], 'click', handleYearClick);
         }
         yearConstructed	= true;
 
-        var  btnYearInc = root.querySelectorAll('.js-year-inc')[0],
-            btnYearDropdown = root.querySelectorAll('.js-year-dropdown')[0],
-            btnYearDec = root.querySelectorAll('.js-year-dec')[0];
+        var  btnYearInc = find('.js-year-inc'),
+            btnYearDropdown = find('.js-year-dropdown'),
+            btnYearDec = find('.js-year-dec');
 
         on(btnYearDropdown, 'mouseover', function(){
             clearTimeout(timeoutID2);
@@ -390,21 +414,12 @@ var Calendar = function(options){
 		clearInterval(intervalID2);
 		clearTimeout(timeoutID2);
 		crossYearObj.visibility= "hidden";
+        yearConstructed = false;
 	}
 
 	function popUpYear() {
-		var	leftOffset;
-
 		constructYear();
 		crossYearObj.visibility	= (dom||ie)? "visible" : "show";
-        leftOffset = parseInt(crossobj.left) + root.querySelectorAll(".js-spanYear")[0].offsetLeft;
-
-		if (ie)
-		{
-			leftOffset += 6;
-		}
-		//crossYearObj.left =	leftOffset;
-		//crossYearObj.top = parseInt(crossobj.top) +	26;
 	}
 
 	/*** calendar ***/
@@ -425,7 +440,7 @@ var Calendar = function(options){
       var month = n.getMonth() + 1;
       var day;
 
-      if (startAt == 0) {
+      if (!startAtMonday) {
          day = n.getDate() + 1;
       }
       else {
@@ -478,7 +493,7 @@ var Calendar = function(options){
 		}
 
 		for	(var i=0; i<7; i++)	{
-			sHTML += "<td width='27' align='right'><B>"+ dayName[i]+"</B></td>";
+			sHTML += "<td width='27' align='right'><B>"+ days[i]+"</B></td>";
 		}
 		sHTML +="</tr><tr>";
 		
@@ -542,13 +557,15 @@ var Calendar = function(options){
 			}
 		}
 
-        root.querySelectorAll(".js-content")[0].innerHTML   = sHTML;
-        root.querySelectorAll(".js-spanMonth")[0].innerHTML = "&nbsp;" +	monthName[monthSelected] + "&nbsp;<div class='down-arrow'></div>";
-        root.querySelectorAll(".js-spanYear")[0].innerHTML = "&nbsp;" + yearSelected	+ "&nbsp;<div class='down-arrow'></div>";
+        find(".js-calendar-web-widget-content").innerHTML   = sHTML;
+        if (showMonthAndYearPickers){
+            find(".js-spanMonth").innerHTML = "<div class='down-arrow'></div>" + months[monthSelected] ;
+            find(".js-spanYear").innerHTML = "<div class='down-arrow'></div>" + yearSelected;
+        }
 
-		var	days = root.querySelectorAll('.js-day');
-		for (var i = 0; i < days.length ; i ++){
-            on(days[i], "click", handleDaySelect);
+		var	dys = find('.js-day');
+		for (var i = 0; i < dys.length ; i ++){
+            on(dys[i], "click", handleDaySelect);
 		}
 	}
 
@@ -626,7 +643,7 @@ var Calendar = function(options){
 						{
 							for	(var j=0; j<12;	j++)
 							{
-								if (aData[i]==monthName[j])
+								if (aData[i] == months[j])
 								{
 									monthSelected=j;
 									tokensChanged ++
@@ -690,6 +707,19 @@ var Calendar = function(options){
         }
     }
 
+    // handy selector - returns null, single element or array of elements
+    function find(selector, context){
+        if (context=== undefined)
+            context = root;
+        var results = context.querySelectorAll(selector);
+        if (results.length === 0)
+            return null;
+        if (results.length === 1)
+            return results[0];
+
+        return results;
+    }
+
 	// create calendar
 	init();
 
@@ -713,9 +743,8 @@ var Calendar = function(options){
         }
 	});
 
-    var btnFocusToday = root.querySelectorAll('.js-focus-today');
-    if (btnFocusToday.length > 0){
-        btnFocusToday =btnFocusToday[0];
+    var btnFocusToday = find('.js-focus-today');
+    if (btnFocusToday){
         on(btnFocusToday, "click", function(){
             monthSelected=selectedMonth;
             yearSelected=selectedYear;
@@ -723,18 +752,24 @@ var Calendar = function(options){
         });
     }
 
+    if (showMonthAndYearPickers){
+        on(find('.js-calendar-web-widget-year-container'), "click", function(){
+            if (yearConstructed){
+                popDownYear();
+            } else {
+               popUpYear();
+            }
+        });
+        on(find('.js-calendar-web-widget-month-container'), "click", function(){
+            if (monthConstructed){
+                popDownMonth();
+            } else {
+                popUpMonth();
+            }
+        });
+    }
 
-    on(root.querySelectorAll('.js-close')[0], "click", function(){
-        closeCalendar();
-    });
-
-    on(root.querySelectorAll('.js-spanYear')[0], "click", function(){
-		popUpYear();
-	});
-    on(root.querySelectorAll('.js-spanMonth')[0], "click", function(){
-		popUpMonth();
-	});
-    var btnDecMonth = root.querySelectorAll('.js-decMonth')[0];
+    var btnDecMonth = find('.js-decMonth');
     on(btnDecMonth, "click", decMonth);
     on(btnDecMonth, "mouseout", function(){
         clearInterval(intervalID1);
@@ -749,7 +784,7 @@ var Calendar = function(options){
     });
 
 
-    var btnIncMonth =root.querySelectorAll('.js-incMonth')[0];
+    var btnIncMonth =find('.js-incMonth');
     on(btnIncMonth, "click", incMonth);
     on(btnIncMonth, "mouseout", function(){
         clearInterval(intervalID1);

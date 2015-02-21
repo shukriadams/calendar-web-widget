@@ -2,46 +2,81 @@
 .calendar-web-widget {
 
   $calender-border-curve:5px;
-  .calendar-outer {
-    z-index:999;
-    position:absolute;
-    visibility:hidden;
-    width:280px; // you can override the calender width by setting a width here
+  $calender-width:280px;
+
+  .calendar-web-widget-container {
+    width:$calender-width; // you can override the calender width by setting a width here
     font-family:sans-serif;
     font-size:11px;
     border-width:1px;
+    visibility:hidden;
     border-style:solid;
     border-color:#395d9c;
     background-color: #F3EFEC;
     -webkit-border-radius: $calender-border-curve;
     -moz-border-radius: $calender-border-curve;
     border-radius: $calender-border-curve;
+
+    // no select
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 
-  .header-button-wrapper{
+  .calendar-web-widget-container--inline{
+    position:static;
+  }
+
+  .calendar-web-widget-container--float{
+    z-index:999;
+    position:absolute;
+
+  }
+
+  .calendar-web-widget-header{
     display:table;
     width:100%;
-    .header-button{
-      display:table-cell;
-      border-width:0;
-      cursor:pointer;
-      &.small {
-        width:20px;
-      }
-    }
-  }
-
-  .maintable {
-
-  }
-
-  .headerTable{
-    width:100%;
-    padding:2px;
+    padding: 7px 4px 7px 4px;
     font-family:sans-serif;
     font-weight: bold;
     font-size:13px;
     color:#000000;
+    .header-item {
+      display:table-cell;
+      border-width:0;
+      padding-left: 10px;
+
+      &.next{
+        padding-right: 16px;
+        text-align: right;
+        padding-left:0;
+      }
+      &.prev{
+        padding-left: 8px;
+      }
+    }
+  }
+
+  .calendar-web-widget-month-container {
+    cursor:pointer;
+    margin-left:10px;
+    margin-right:5px;
+    width: 56px;
+  }
+
+  .calendar-web-widget-year-container {
+    cursor:pointer;
+    margin-right:10px;
+    margin-left:5px;
+    width: 56px;
+  }
+
+  .calendar-web-widget-content {
+    padding:5px;
+    background-color:#ffffff;
   }
 
   .holiday{
@@ -67,6 +102,8 @@
 
   .today-footer {
     background-color:white;
+    padding:5px;
+    text-align:center;
     -webkit-border-bottom-left-radius: $calender-border-curve;
     -webkit-border-bottom-right-radius: $calender-border-curve;
     -moz-border-bottom-left-radius: $calender-border-curve;
@@ -120,26 +157,7 @@
     z-index:999;
     position:absolute;
     visibility:hidden;
-  }
-
-  .close {
-    height: 18px;
-    width: 17px;
-    background-color: #880000;
-    text-decoration: none;
-    top: 6px;
-    right: 6px;
-    position: absolute;
-    display: block;
-  }
-  .close:after {
-    position: relative;
-    content: "\d7";
-    font-size: 22px;
-    color: white;
-    font-weight: bold;
-    top: -3px;
-    left: -2px;
+    //margin-left: 18px;
   }
 
   .down-arrow {
@@ -148,6 +166,7 @@
     border-top: 8px solid #880000;
     cursor: pointer;
     display: inline-block;
+    margin-right:6px;
   }
 
   .left-arrow {

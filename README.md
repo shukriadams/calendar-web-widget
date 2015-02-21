@@ -26,15 +26,18 @@ Use
 Options
 -------
 
-        new Calendar({
-             el : // element to trigger calendar opening - required
-             host : // element calendar rendered in - optional
-             format :  // data format - optional. Egs, 'dd/mm/yyyy',
-             value : // preselected date - optional. Must be ISO format (yyyy-mm-dd).
-             onValueChanged : // callback when calender value changes. Optional. Returns two objects :
-                calender, { date : selected value }
-        });
+The Calendar constructor takes an options object which supports the following properties :
 
+- *el :* DOM element to trigger calendar opening - required
+- *host :* DOM element calendar should be appended to - optional. If not set, calendar appended after trigger element.
+- *format :* data format - optional. Egs, 'dd/mm/yyyy',
+- *value :* preselected date - optional. Must be ISO format (yyyy-mm-dd).
+- *onValueChanged :* callback when calender value changes. Optional. Returns two objects : calender, { date : selected value }
+- *showToday :* Boolean, true if calendar should display footer with info and link about selected date.
+- *months :* String array of months, starting with January. Use this to localize calendar.
+- *days :* String array of days, starting with Sunday.  Use this to localize calendar.
+- *startAtMonday :*  Boolean, true if week starts with Monday. If false, starts at Sunday.
+- *showMonthAndYearPickers :* Boolean, true if month and year select menus are enabled.
 
 Dev
 ---
