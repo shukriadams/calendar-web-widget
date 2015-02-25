@@ -8,11 +8,11 @@
     text-decoration: none;
   }
 
-  .calendar-web-widget--hidden {
+  .calendar--hidden {
     display:none;
   }
 
-  .calendar-web-widget-container {
+  .calendar-container {
     width:$calender-width; // you can override the calender width by setting a width here
     font-family:sans-serif;
     font-size:11px;
@@ -34,16 +34,16 @@
     user-select: none;
   }
 
-  .calendar-web-widget-container--inline{
+  .calendar--inline{
     position:static;
   }
 
-  .calendar-web-widget-container--float{
+  .calendar--float{
     z-index:999;
     position:absolute;
   }
 
-  .calendar-web-widget-header{
+  .calendar-header{
     display:table;
     width:100%;
     padding: 7px 4px 7px 4px;
@@ -51,60 +51,55 @@
     font-weight: bold;
     font-size:13px;
     color:#000000;
-    .header-item {
+    .calendar-header-item {
       display:table-cell;
       border-width:0;
       padding-left: 10px;
 
-      &.next{
+      &.calendar-next{
         padding-right: 16px;
         text-align: right;
         padding-left:0;
       }
-      &.prev{
+      &.calendar-prev{
         padding-left: 8px;
       }
     }
   }
 
-  .calendar-web-widget-month-container {
+  .calendar-month-container {
     cursor:pointer;
     margin-left:10px;
     margin-right:5px;
     width: 56px;
   }
 
-  .calendar-web-widget-year-container {
+  .calendar-year-container {
     cursor:pointer;
     margin-right:10px;
     margin-left:5px;
     width: 56px;
   }
 
-  .calendar-web-widget-content {
+  .calendar-content {
     padding:5px;
     background-color:#ffffff;
   }
 
-  .holiday{
-    background-color:#FFDDDD;
-  }
-
-  .calendar-web-widget-bordered{
+  .calendar-bordered{
     border-style:solid;
     border-width:1px;
     border-color:#a0a0a0;
   }
 
 
-  .innerTable{
+  .calendar-calendar{
     width:100%;
-    font-family:sans-serif;
     font-size: 14px;
     font-weight: bold;
   }
 
-  .today-footer {
+  .calendar-footer {
     background-color:white;
     padding:5px;
     text-align:center;
@@ -116,12 +111,12 @@
     border-bottom-right-radius: $calender-border-curve;
   }
 
-  .day {
+  .calendar-day {
     color:#548cab;
-    &.today {
+    &.calendar-today {
       color:#ff0000;
     }
-    &.sunday{
+    &.calendar-sunday{
       color:#909090;
     }
     &:hover{
@@ -130,15 +125,14 @@
     }
   }
 
-  .dropdown {
-    font-family:sans-serif;
+  .calendar-dropdown {
     font-size:15px;
     border-width:1px;
     border-style:solid;
     border-color:#a0a0a0;
     background-color:white;
 
-    .dropdown-item{
+    .calendar-dropdown-item{
       padding-top:2px;
       &:hover{
         background-color:#cee7ff;
@@ -146,24 +140,24 @@
     }
   }
 
-  .month-dropdown {
+  .calendar-dropdown-month {
     width:86px;
   }
 
-  .year-dropdown{
+  .calendar-dropdown-year{
     width:50px;
     .dropdown-item{
       text-align: center;
     }
   }
 
-  .selectMenu{
+  .calendar-dropdown-container{
     z-index:999;
     position:absolute;
     //margin-left: 18px;
   }
 
-  .down-arrow {
+  .calendar-down-arrow {
     border-left: 8px solid transparent;
     border-right: 10px solid transparent;
     border-top: 8px solid #880000;
@@ -172,7 +166,7 @@
     margin-right:6px;
   }
 
-  .left-arrow {
+  .calendar-left-arrow {
     border-top: 6px solid transparent;
     border-right: 8px solid #880000;
     border-bottom: 8px solid transparent;
@@ -181,7 +175,7 @@
     margin-bottom: -2px;
   }
 
-  .right-arrow {
+  .calendar-right-arrow {
     border-top: 6px solid transparent;
     border-left: 8px solid #880000;
     border-bottom: 8px solid transparent;

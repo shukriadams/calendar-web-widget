@@ -93,38 +93,38 @@ var Calendar = function(options){
     // create outer container
     var markup =
         // start outer container
-        "<div class='js-calendar-web-widget-container calendar-web-widget-container " + (inline ? "calendar-web-widget-container--inline" : "calendar-web-widget-container--float") + "'>"+
+        "<div class='js-calendar-container calendar-container " + (inline ? "calendar--inline" : "calendar--float") + "'>"+
         // inner row 1 - header
-        "<div class='js-calendar-web-widget-header calendar-web-widget-header'></div>" +
+        "<div class='js-calendar-header calendar-header'></div>" +
         // inner row 2 - calendar
-        "<div class='js-calendar-web-widget-content calendar-web-widget-content'></div>";
+        "<div class='js-calendar-content calendar-content'></div>";
 
     // inner row 3 - today footer
     if (showToday)
-        markup += "<div class='today-footer js-lblToday '></div>";
+        markup += "<div class='js-calendar-footer calendar-footer'></div>";
 
     // end outer container
     markup += "</div>";
     root.innerHTML = markup;
-	var	calendarContainer = find('.js-calendar-web-widget-container');
+	var	calendarContainer = find('.js-calendar-container');
 
 
     // create contents of header
     // link to previous month
-    markup="<div class='js-decMonth header-item prev'><div class='left-arrow'></div></div>";
+    markup="<div class='js-calendar-prev calendar-header-item calendar-prev'><div class='calendar-left-arrow'></div></div>";
 
     if (showMonthAndYearPickers){
         // link to month drop-down list
-        markup+="<div class='header-item'><div class='js-calendar-web-widget-month-container calendar-web-widget-month-container'><div class='js-spanMonth'></div><div class='js-selectMonth selectMenu'></div></div></div>";
+        markup+="<div class='calendar-header-item'><div class='js-calendar-month-container calendar-month-container'><div class='js-spanMonth'></div><div class='js-selectMonth calendar-dropdown-container'></div></div></div>";
 
         // link to year drop-down list
-        markup+="<div class='header-item'><div class='js-calendar-web-widget-year-container calendar-web-widget-year-container'><div class='js-spanYear'></div><div class='js-selectYear selectMenu'></div></div></div>";
+        markup+="<div class='calendar-header-item'><div class='js-calendar-year-container calendar-year-container'><div class='js-spanYear'></div><div class='js-selectYear calendar-dropdown-container'></div></div></div>";
     }
 
     // link to next month
-    markup+="<div class='js-incMonth header-item next'><div class='right-arrow'></div></div>";
+    markup+="<div class='js-calendar-next calendar-header-item calendar-next'><div class='calendar-right-arrow'></div></div>";
 
-    find(".js-calendar-web-widget-header").innerHTML  =	markup;
+    find(".js-calendar-header").innerHTML  =	markup;
 
     if (showMonthAndYearPickers){
         monthMenu = find(".js-selectMonth");
@@ -133,7 +133,7 @@ var Calendar = function(options){
 
     if (showToday)
     {
-        find(".js-lblToday").innerHTML = todayString + " <a title='"+gotoString+"' class='js-focus-today' href='javascript:void(0)'>" + days[(selectedDate.getDay()-startAt==-1)?6:(selectedDate.getDay()-startAt)]+", " + selectedDay + " " + months[selectedMonth].substring(0,3)	+ "	" +	selectedYear	+ "</a>";
+        find(".js-calendar-footer").innerHTML = todayString + " <a title='"+gotoString+"' class='js-focus-today' href='javascript:void(0)'>" + days[(selectedDate.getDay()-startAt==-1)?6:(selectedDate.getDay()-startAt)]+", " + selectedDay + " " + months[selectedMonth].substring(0,3)	+ "	" +	selectedYear	+ "</a>";
     }
 
     hideCalendar();
@@ -169,14 +169,14 @@ var Calendar = function(options){
     }
 
     if (showMonthAndYearPickers){
-        on(find('.js-calendar-web-widget-year-container'), "click", function(){
+        on(find('.js-calendar-year-container'), "click", function(){
             if (yearMenuShowing){
                 hideYearMenu();
             } else {
                 showYearMenu();
             }
         });
-        on(find('.js-calendar-web-widget-month-container'), "click", function(){
+        on(find('.js-calendar-month-container'), "click", function(){
             if (monthMenuShowing){
                 hideMonthMenu();
             } else {
@@ -185,7 +185,7 @@ var Calendar = function(options){
         });
     }
 
-    var btnDecMonth = find('.js-decMonth');
+    var btnDecMonth = find('.js-calendar-prev');
     on(btnDecMonth, "click", decMonth);
     on(btnDecMonth, "mouseout", function(){
         clearInterval(intervalID1);
@@ -200,7 +200,7 @@ var Calendar = function(options){
     });
 
 
-    var btnIncMonth = find('.js-incMonth');
+    var btnIncMonth = find('.js-calendar-next');
     on(btnIncMonth, "click", incMonth);
     on(btnIncMonth, "mouseout", function(){
         clearInterval(intervalID1);
@@ -220,7 +220,7 @@ var Calendar = function(options){
 
 	function hideCalendar()	{
         if (!inline){
-            calendarContainer.classList.add('calendar-web-widget--hidden');
+            calendarContainer.classList.add('calendar--hidden');
         }
         hideMonthMenu();
         hideYearMenu();
@@ -300,16 +300,16 @@ var Calendar = function(options){
 	function constructMonth() {
         hideYearMenu();
 		if (!monthConstructed) {
-			var sHTML =	'';
+			var markup = '';
 			for	(var i=0; i<12;	i++) {
 				var sName =	months[i];
 				if (i==monthSelected){
 					sName =	"<B>" +	sName +	"</B>";
 				}
-				sHTML += "<tr><td class='js-month month dropdown-item' data-month='" + i + "' id='m" + i + "' style='cursor:pointer'>&nbsp;" + sName + "&nbsp;</td></tr>";
+                markup += "<tr><td class='js-month month calendar-dropdown-item' data-month='" + i + "' id='m" + i + "' style='cursor:pointer'>&nbsp;" + sName + "&nbsp;</td></tr>";
 			}
 
-            find(".js-selectMonth").innerHTML = "<table class='js-month-table dropdown month-dropdown'  cellspacing=0>" + sHTML +	"</table>";
+            find(".js-selectMonth").innerHTML = "<table class='js-month-table calendar-dropdown calendar-dropdown-month' cellspacing=0>" + markup +	"</table>";
 
             var mnths = find('.js-month');
             for (var j = 0 ; j < mnths.length ; j ++){
@@ -343,13 +343,13 @@ var Calendar = function(options){
 	function showMonthMenu() {
 		constructMonth();
         if(monthMenu){
-            monthMenu.classList.remove('calendar-web-widget--hidden');
+            monthMenu.classList.remove('calendar--hidden');
         }
 	}
 
 	function hideMonthMenu()	{
         if(monthMenu){
-            monthMenu.classList.add('calendar-web-widget--hidden');
+            monthMenu.classList.add('calendar--hidden');
         }
 
         monthMenuShowing = false;
@@ -378,9 +378,9 @@ var Calendar = function(options){
 
 			if (newYear == yearSelected)
 			{ 
-				txtYear =	"&nbsp;<B>"	+ newYear +	"</B>&nbsp;";
+				txtYear = "&nbsp;<B>" + newYear + "</B>&nbsp;";
 			} else { 
-				txtYear =	"&nbsp;" + newYear + "&nbsp;" 
+				txtYear = "&nbsp;" + newYear + "&nbsp;"
 			}
             find(".js-y"+i).innerHTML = txtYear
 		}
@@ -399,7 +399,7 @@ var Calendar = function(options){
 		if (yearConstructed)
             return;
 
-        var html =	"<tr><td align='center' class='js-year-dec dropdown-item' style='cursor:pointer'>-</td></tr>";
+        var html = "<tr><td align='center' class='js-year-dec calendar-dropdown-item' style='cursor:pointer'>-</td></tr>";
 
         var j =	0;
         nStartingYear =	yearSelected-3;
@@ -409,13 +409,13 @@ var Calendar = function(options){
                 sName =	"<b>" +	sName +	"</b>";
             }
 
-            html += "<tr><td data-year='" + j + "' class='js-y" + j + " js-year dropdown-item' style='cursor:pointer'>&nbsp;" + sName + "&nbsp;</td></tr>";
+            html += "<tr><td data-year='" + j + "' class='js-y" + j + " js-year calendar-dropdown-item' style='cursor:pointer'>&nbsp;" + sName + "&nbsp;</td></tr>";
             j ++;
         }
 
-        html += "<tr><td align='center' class='js-year-inc dropdown-item' style='cursor:pointer'>+</td></tr>";
+        html += "<tr><td align='center' class='js-year-inc calendar-dropdown-item' style='cursor:pointer'>+</td></tr>";
 
-        find('.js-selectYear').innerHTML = "<table class='dropdown year-dropdown js-year-dropdown' cellspacing=0>"	+ html	+ "</table>";
+        find('.js-selectYear').innerHTML = "<table class='calendar-dropdown calendar-dropdown-year js-year-dropdown' cellspacing=0>"	+ html	+ "</table>";
 
         var years = find('.js-year');
         for (var i = 0 ; i < years.length ; i ++){
@@ -474,7 +474,7 @@ var Calendar = function(options){
 		clearInterval(intervalID2);
 		clearTimeout(timeoutID2);
         if(yearMenu){
-            yearMenu.classList.add('calendar-web-widget--hidden');
+            yearMenu.classList.add('calendar--hidden');
         }
         yearMenuShowing = false;
 	}
@@ -482,7 +482,7 @@ var Calendar = function(options){
 	function showYearMenu() {
         buildYearMenu();
         if(yearMenu){
-            yearMenu.classList.remove('calendar-web-widget--hidden');
+            yearMenu.classList.remove('calendar--hidden');
         }
 	}
 
@@ -549,36 +549,36 @@ var Calendar = function(options){
 			dayPointer = 6;
 		}
 
-		var sHTML =	"<table	class='innerTable' border=0><tr>";
+		var markup = "<table class='calendar-calendar' border=0><tr>";
 
 		if (showWeekNumber==1)
 		{
-			sHTML += "<td width=27><b>" + weekString + "</b></td><td width=1 rowspan=7 bgcolor='#d0d0d0' style='padding:0px'></td>"
+            markup += "<td width=27><b>" + weekString + "</b></td><td width=1 rowspan=7 bgcolor='#d0d0d0' style='padding:0px'></td>"
 		}
 
 		for	(var i=0; i<7; i++)	{
-			sHTML += "<td width='27' align='right'><B>"+ days[i]+"</B></td>";
+            markup += "<td width='27' align='right'><B>"+ days[i]+"</B></td>";
 		}
-		sHTML +="</tr><tr>";
+        markup +="</tr><tr>";
 		
 		if (showWeekNumber==1)
 		{
-			sHTML += "<td align=right>" + WeekNbr(startDate) + "&nbsp;</td>";
+            markup += "<td align=right>" + WeekNbr(startDate) + "&nbsp;</td>";
 		}
 
 		for	( var i=1; i<=dayPointer;i++ )
 		{
-			sHTML += "<td>&nbsp;</td>";
+            markup += "<td>&nbsp;</td>";
 		}
 	
 		for	( var datePointer=1; datePointer<=numDaysInMonth; datePointer++ )
 		{
 			dayPointer++;
-			sHTML += "<td align=right>";
+            markup += "<td align=right>";
 			var sStyle='';
 			if ((datePointer == odateSelected) && (monthSelected == omonthSelected)	&& (yearSelected == oyearSelected))
 			{ 
-				sStyle+= " calendar-web-widget-bordered ";
+				sStyle+= " calendar-bordered ";
 			}
 
 			var sHint = '';
@@ -587,33 +587,32 @@ var Calendar = function(options){
 			sHint = sHint.replace(regexp,"&quot;");
 
 			if ((datePointer==selectedDay)&&(monthSelected==selectedMonth)&&(yearSelected==selectedYear))
-			{ 
-				sHTML += "<b><a title=\"" + sHint + "\" class='"+sStyle+" day today' href='javascript:void(0)'><font class='js-day' data-day='" + datePointer +"'>&nbsp;" + datePointer + "</font>&nbsp;</a></b>";
+			{
+                markup += "<b><a title=\"" + sHint + "\" class='"+sStyle+" calendar-day calendar-today' href='javascript:void(0)'><font class='js-day' data-day='" + datePointer +"'>&nbsp;" + datePointer + "</font>&nbsp;</a></b>";
 			}
 			else if	(dayPointer % 7 == (startAt * -1)+1)
-			{ 
-				sHTML += "<a title=\"" + sHint + "\" class='"+sStyle+" day sunday' href='javascript:void(0)'>&nbsp;<font class='js-day' data-day='" + datePointer +"'>" + datePointer + "</font>&nbsp;</a>";
+			{
+                markup += "<a title=\"" + sHint + "\" class='"+sStyle+" calendar-day calendar-sunday' href='javascript:void(0)'>&nbsp;<font class='js-day' data-day='" + datePointer +"'>" + datePointer + "</font>&nbsp;</a>";
 			}
 			else
-			{ 
-				sHTML += "<a title=\"" + sHint + "\" class='"+sStyle+" day' href='javascript:void(0)'>&nbsp;<font class='js-day' data-day='" + datePointer +"' >" + datePointer + "&nbsp;</a>" ;
+			{
+                markup += "<a title=\"" + sHint + "\" class='"+sStyle+" calendar-day' href='javascript:void(0)'>&nbsp;<font class='js-day' data-day='" + datePointer +"' >" + datePointer + "&nbsp;</a>" ;
 			}
 
-			sHTML += "";
-			if ((dayPointer+startAt) % 7 == startAt) 
-			{ 
-				sHTML += "</tr><tr>";
+			if ((dayPointer+startAt) % 7 == startAt)
+			{
+                markup += "</tr><tr>";
 				if ((showWeekNumber == 1)&&(datePointer<numDaysInMonth))
 				{
-					sHTML += "<td align=right>" + (WeekNbr(new Date(yearSelected,monthSelected,datePointer+1))) + "&nbsp;</td>";
+                    markup += "<td align=right>" + (WeekNbr(new Date(yearSelected,monthSelected,datePointer+1))) + "&nbsp;</td>";
 				}
 			}
 		}
 
-        find(".js-calendar-web-widget-content").innerHTML   = sHTML;
+        find(".js-calendar-content").innerHTML = markup;
         if (showMonthAndYearPickers){
-            find(".js-spanMonth").innerHTML = "<div class='down-arrow'></div>" + months[monthSelected] ;
-            find(".js-spanYear").innerHTML = "<div class='down-arrow'></div>" + yearSelected;
+            find(".js-spanMonth").innerHTML = "<div class='calendar-down-arrow'></div>" + months[monthSelected] ;
+            find(".js-spanYear").innerHTML = "<div class='calendar-down-arrow'></div>" + yearSelected;
         }
 
 		var	dys = find('.js-day');
@@ -633,7 +632,7 @@ var Calendar = function(options){
 
     // returns true if calendar is visible
     function isVisible(){
-        return !calendarContainer.classList.contains('calendar-web-widget--hidden');
+        return !calendarContainer.classList.contains('calendar--hidden');
 
     }
 
@@ -728,7 +727,7 @@ var Calendar = function(options){
             } while(aTag.tagName!="BODY");
 
             constructCalendar (1, monthSelected, yearSelected);
-            calendarContainer.classList.remove('calendar-web-widget--hidden');
+            calendarContainer.classList.remove('calendar--hidden');
 
             bShow = true;
         }
@@ -772,8 +771,6 @@ var Calendar = function(options){
     }
 
 };
-
-
 
     return Calendar;
 });
