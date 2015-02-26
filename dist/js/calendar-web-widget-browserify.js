@@ -113,10 +113,12 @@ var Calendar = function(options){
 
     if (showMonthAndYearPickers){
         // link to month drop-down list
-        markup+="<div class='calendar-header-item'><div class='js-calendar-month-container calendar-month-container'><div class='js-spanMonth'></div><div class='js-selectMonth calendar-dropdown-container'></div></div></div>";
+        markup+="<div class='calendar-header-item'><div class='js-calendar-month-container calendar-month-container calender-pointer '><div class='js-spanMonth'></div><div class='js-selectMonth calendar-dropdown-container'></div></div></div>";
 
         // link to year drop-down list
-        markup+="<div class='calendar-header-item'><div class='js-calendar-year-container calendar-year-container'><div class='js-spanYear'></div><div class='js-selectYear calendar-dropdown-container'></div></div></div>";
+        markup+="<div class='calendar-header-item'><div class='js-calendar-year-container calendar-year-container calender-pointer'><div class='js-spanYear'></div><div class='js-selectYear calendar-dropdown-container'></div></div></div>";
+    } else {
+        markup += "<div class='calendar-header-item'><span class='js-spanMonth calender-selected-month'></span><span class='js-spanYear'></span></div>";
     }
 
     // link to next month
@@ -608,9 +610,13 @@ var Calendar = function(options){
 		}
 
         find(".js-calendar-content").innerHTML = markup;
+
         if (showMonthAndYearPickers){
             find(".js-spanMonth").innerHTML = "<div class='calendar-down-arrow'></div>" + months[monthSelected] ;
             find(".js-spanYear").innerHTML = "<div class='calendar-down-arrow'></div>" + yearSelected;
+        } else {
+            find(".js-spanMonth").innerHTML = months[monthSelected] ;
+            find(".js-spanYear").innerHTML = yearSelected;
         }
 
 		var	dys = find('.js-day');

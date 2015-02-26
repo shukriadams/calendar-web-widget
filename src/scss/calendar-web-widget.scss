@@ -17,7 +17,6 @@
     font-family:sans-serif;
     font-size:11px;
     border-width:1px;
-
     border-style:solid;
     border-color:#395d9c;
     background-color: #F3EFEC;
@@ -46,16 +45,19 @@
   .calendar-header{
     display:table;
     width:100%;
-    padding: 7px 4px 7px 4px;
+    padding: 7px 0 7px 0;
     font-family:sans-serif;
     font-weight: bold;
     font-size:13px;
     color:#000000;
+    .calender-selected-month {
+      padding-right:5px;
+    }
     .calendar-header-item {
       display:table-cell;
       border-width:0;
       padding-left: 10px;
-
+      text-align: center;
       &.calendar-next{
         padding-right: 8px;
         text-align: right;
@@ -69,14 +71,18 @@
   }
 
   .calendar-month-container {
-    cursor:pointer;
+
     margin-left:10px;
     margin-right:5px;
     width: 56px;
   }
 
-  .calendar-year-container {
+  .calender-pointer {
     cursor:pointer;
+  }
+
+  .calendar-year-container {
+
     margin-right:10px;
     margin-left:5px;
     width: 56px;
@@ -155,7 +161,6 @@
   .calendar-dropdown-container{
     z-index:999;
     position:absolute;
-    //margin-left: 18px;
   }
 
   .calendar-down-arrow {
@@ -184,5 +189,4 @@
     display: inline-block;
     margin-bottom: -2px;
   }
-
 }
