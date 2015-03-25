@@ -100,7 +100,11 @@
   font-size: 14px;
   font-weight: bold;
 }
-/* line 109, ../../src/scss/calendar-web-widget.scss */
+/* line 108, ../../src/scss/calendar-web-widget.scss */
+.calendar-web-widget .calendar-calendar td {
+  text-align: center;
+}
+/* line 113, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-footer {
   background-color: white;
   padding: 5px;
@@ -112,24 +116,24 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-/* line 121, ../../src/scss/calendar-web-widget.scss */
+/* line 125, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-day {
   color: #548cab;
 }
-/* line 123, ../../src/scss/calendar-web-widget.scss */
+/* line 127, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-day.calendar-today {
   color: #ff0000;
 }
-/* line 126, ../../src/scss/calendar-web-widget.scss */
+/* line 130, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-day.calendar-sunday {
   color: #909090;
 }
-/* line 129, ../../src/scss/calendar-web-widget.scss */
+/* line 133, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-day:hover {
   background-color: #548cab;
   color: white;
 }
-/* line 135, ../../src/scss/calendar-web-widget.scss */
+/* line 139, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-dropdown {
   font-size: 15px;
   border-width: 1px;
@@ -137,32 +141,32 @@
   border-color: #a0a0a0;
   background-color: white;
 }
-/* line 142, ../../src/scss/calendar-web-widget.scss */
+/* line 146, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-dropdown .calendar-dropdown-item {
   padding-top: 2px;
 }
-/* line 144, ../../src/scss/calendar-web-widget.scss */
+/* line 148, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-dropdown .calendar-dropdown-item:hover {
   background-color: #cee7ff;
 }
-/* line 150, ../../src/scss/calendar-web-widget.scss */
+/* line 154, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-dropdown-month {
   width: 86px;
 }
-/* line 154, ../../src/scss/calendar-web-widget.scss */
+/* line 158, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-dropdown-year {
   width: 50px;
 }
-/* line 156, ../../src/scss/calendar-web-widget.scss */
+/* line 160, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-dropdown-year .dropdown-item {
   text-align: center;
 }
-/* line 161, ../../src/scss/calendar-web-widget.scss */
+/* line 165, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-dropdown-container {
   z-index: 999;
   position: absolute;
 }
-/* line 166, ../../src/scss/calendar-web-widget.scss */
+/* line 170, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-down-arrow {
   border-left: 8px solid transparent;
   border-right: 10px solid transparent;
@@ -171,7 +175,7 @@
   display: inline-block;
   margin-right: 6px;
 }
-/* line 175, ../../src/scss/calendar-web-widget.scss */
+/* line 179, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-left-arrow {
   border-top: 6px solid transparent;
   border-right: 8px solid #880000;
@@ -180,7 +184,7 @@
   display: inline-block;
   margin-bottom: -2px;
 }
-/* line 184, ../../src/scss/calendar-web-widget.scss */
+/* line 188, ../../src/scss/calendar-web-widget.scss */
 .calendar-web-widget .calendar-right-arrow {
   border-top: 6px solid transparent;
   border-left: 8px solid #880000;
